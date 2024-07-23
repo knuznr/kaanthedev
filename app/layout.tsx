@@ -24,7 +24,7 @@ export const metadata: Metadata = {
     type: 'website',
   },
   icons: {
-    shortcut: '/favicon.ico',
+    shortcut: '/public/favicon.ico',
   },
   robots: {
     index: true,
