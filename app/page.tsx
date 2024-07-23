@@ -6,7 +6,7 @@ export default function Page() {
       <head>
         <link rel="shortcut icon" href="/favicon.ico" />
       </head>
-      <h1 class="mb-8 text-2xl font-medium tracking-tighter">
+      <h1 className="mb-8 text-2xl font-medium tracking-tighter">
         hey, I'm kaan! 👋
       </h1>
       <p className="prose prose-neutral dark:prose-invert">
