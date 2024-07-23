@@ -23,6 +23,9 @@ export const metadata: Metadata = {
     locale: 'en_EN',
     type: 'website',
   },
+  icons: {
+    shortcut: '/favicon.ico',
+  },
   robots: {
     index: true,
     follow: true,
