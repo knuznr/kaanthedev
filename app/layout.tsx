@@ -20,7 +20,7 @@ export const metadata: Metadata = {
     description: 'This is my portfolio.',
     url: baseUrl,
     siteName: 'My Portfolio',
-    locale: 'tr_TR',
+    locale: 'en_EN',
     type: 'website',
   },
   robots: {

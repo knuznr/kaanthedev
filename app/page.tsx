@@ -1,11 +1,12 @@
 import { BlogPosts } from "app/components/posts";
+import Head from "next/head";
 
 export default function Page() {
   return (
     <section>
-      <head>
+      <Head>
         <link rel="shortcut icon" href="/favicon.ico" />
-      </head>
+      </Head>
       <h1 className="mb-8 text-2xl font-medium tracking-tighter">
         hey, I'm kaan! 👋
       </h1>
