@@ -1,0 +1,79 @@
+---
+title: 'Explaination of 'Time Complexity''
+publishedAt: '2024-07-22'
+summary: 'Simple explaination of sorting algorithms'
+image: /images/title.png
+---
+
+Time complexity is a critical concept in computer science, particularly in algorithm analysis and design. It provides a way to evaluate and compare the efficiency of algorithms, specifically in terms of their execution time relative to the size of the input. Understanding time complexity helps developers and engineers choose the most efficient algorithms for their applications and ensure that systems perform optimally. This essay explores the concept of time complexity, its common notations, and its significance in algorithm design.
+
+## What is Time Complexity?
+
+Time complexity measures the amount of computational time an algorithm takes to complete as a function of the input size. It provides a high-level understanding of how an algorithm's running time increases with the size of the input, which is crucial for assessing scalability and performance.
+
+Time complexity is typically expressed using Big O notation, which describes the upper bound of an algorithm's running time in the worst-case scenario. This allows for a generalized comparison of algorithms without delving into specific hardware or implementation details.
+
+## Common Time Complexity Classes
+
+<Image
+  alt={`Cheatsheet`}
+  src={`/images/complex.png`}
+  width={1280}
+  height={720}
+/>
+
+### 1. **Constant Time – O(1)**
+
+An algorithm is said to have constant time complexity, denoted as \(O(1)\), if its running time does not change regardless of the input size. This implies that the time taken to execute the algorithm remains constant even as the size of the input grows. Examples of \(O(1)\) operations include accessing an element in an array or performing simple arithmetic operations.
+
+### 2. **Logarithmic Time – O(\(\log n\))**
+
+An algorithm has logarithmic time complexity, denoted as \(O(\log n)\), if its running time increases logarithmically with the size of the input. This often occurs in algorithms that reduce the problem size by a constant factor at each step. A classic example is binary search, which efficiently locates an element in a sorted array by repeatedly dividing the search interval in half.
+
+### 3. **Linear Time – O(n)**
+
+An algorithm has linear time complexity, denoted as \(O(n)\), if its running time grows linearly with the input size. This means that the time taken is directly proportional to the number of elements in the input. Examples include iterating through an array or list and performing operations on each element.
+
+### 4. **Linearithmic Time – O(n \log n)**
+
+Linearithmic time complexity, denoted as \(O(n \log n)\), is often seen in efficient sorting algorithms like Merge Sort and Quick Sort. The running time grows linearly with the input size and also involves a logarithmic factor. These algorithms are more efficient than quadratic ones for large datasets.
+
+### 5. **Quadratic Time – O(n^2)**
+
+An algorithm exhibits quadratic time complexity, denoted as \(O(n^2)\), if its running time is proportional to the square of the input size. This complexity arises in algorithms with nested loops, such as Bubble Sort or Selection Sort, where each element is compared with every other element.
+
+### 6. **Cubic Time – O(n^3)**
+
+Cubic time complexity, denoted as \(O(n^3)\), is seen in algorithms with three nested loops. This complexity is less common but appears in certain matrix operations and other complex algorithms.
+
+### 7. **Exponential Time – O(2^n)**
+
+Exponential time complexity, denoted as \(O(2^n)\), is characterized by a running time that doubles with each additional input element. This often occurs in brute-force algorithms, such as solving the Traveling Salesman Problem with all possible routes. Exponential algorithms are generally impractical for large input sizes.
+
+### 8. **Factorial Time – O(n!)**
+
+Factorial time complexity, denoted as \(O(n!)\), represents an extremely rapid growth in running time as the input size increases. Algorithms with factorial time complexity, like certain permutations and combinatorial problems, become infeasible for even moderately sized inputs.
+
+## Significance of Time Complexity
+
+Understanding time complexity is crucial for several reasons:
+
+### 1. **Algorithm Efficiency**
+
+Time complexity provides insight into an algorithm’s efficiency, allowing for the comparison of different algorithms. Efficient algorithms can handle larger inputs within reasonable time constraints, making them suitable for real-world applications.
+
+### 2. **Scalability**
+
+As input sizes grow, algorithms with lower time complexities scale more gracefully. For instance, an \(O(n \log n)\) algorithm will perform significantly better than an \(O(n^2)\) algorithm for large datasets, making it more scalable.
+
+### 3. **Performance Prediction**
+
+Time complexity allows for performance prediction and benchmarking. By understanding an algorithm’s time complexity, developers can estimate how it will perform under various conditions and optimize it if necessary.
+
+### 4. **Resource Management**
+
+Efficient algorithms contribute to better resource management, including CPU time and memory usage. Choosing algorithms with lower time complexities can lead to more responsive and efficient software systems.
+
+## Conclusion
+
+Time complexity is a fundamental concept in algorithm analysis, providing a framework for understanding and evaluating the efficiency of algorithms. By categorizing algorithms into different time complexity classes, developers can make informed decisions about which algorithms to use based on their performance and scalability. Mastery of time complexity enables the design of more efficient and effective algorithms, ultimately leading to better software and computational solutions.
