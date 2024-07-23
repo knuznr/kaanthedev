@@ -48,7 +48,7 @@ export default function Page() {
         hey, I'm kaan! 👋
       </h1>
       <p className="prose prose-neutral dark:prose-invert">
-        {`I am a software developer with a deep passion for coding, coffee, and technology. My journey in the tech world has been fueled by a relentless curiosity and a love for problem-solving.
+        {`I am a software developer with a deep passion for coding, coffee, and technology.
         
         Whether it’s writing clean, efficient code or exploring the latest advancements in technology, I am always eager to learn and innovate. 
         

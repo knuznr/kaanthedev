@@ -2,7 +2,7 @@ import type { Metadata } from 'next';
 import Link from 'next/link';
 
 export const metadata: Metadata = {
-  title: 'Work',
+  title: 'work',
   description: 'A summary of my work and contributions.',
 };
 
