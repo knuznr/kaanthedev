@@ -59,7 +59,7 @@ export default function Page() {
         I am excited about the endless possibilities that technology offers and look forward to contributing to projects that make a difference.
         
         Feel free to `}
-        <Link href="mailto:kaanuznr@gmail.com">contact</Link>
+        <Link href="mailto:me@kaanthe.dev">contact</Link>
         {` me!`}
       </p>
       <div className="my-8 flex w-full flex-col space-y-4">
