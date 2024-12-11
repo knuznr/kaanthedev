@@ -5,11 +5,18 @@ summary: "Simple explanation of sorting algorithms and their types"
 image: /images/sort/sorting.png
 ---
 
+<Image
+  alt={`Cheatsheet`}
+  src={`/images/sort/sorting.png`}
+  width={1280}
+  height={720}
+/>
+
 Sorting algorithms play a critical role in computer science, enabling the efficient organization and retrieval of data. They are fundamental to various applications, from database management systems to search engines, and form the backbone of many computational tasks. The efficiency of these algorithms is often measured by their time complexity, which indicates how the running time of an algorithm increases with the size of the input data.
 
 ## What is Time Complexity?
 
-I've made a blog about [Time Complexity](/blog/time-complexity).
+I have prepared a blog about [Time Complexity](/blog/time-complexity). You can check it out here and get some ideas.
 
 ## Types of Sorting Algorithms
 
@@ -24,7 +31,7 @@ Bubble Sort is one of the simplest sorting algorithms. It repeatedly steps throu
 Here is a simple Python code:
 
 ```python
-def bubblesort(array):
+def bubbleSort(array):
     n = len(array)
     for i in range(n):
         for j in range(n - i - 1):
@@ -37,17 +44,94 @@ def bubblesort(array):
 
 Selection Sort divides the list into a sorted and an unsorted region. It repeatedly selects the smallest (or largest) element from the unsorted region and moves it to the sorted region. Like Bubble Sort, Selection Sort has a time complexity of \(O(n^2)\), making it impractical for large datasets.
 
+Here is a simple Python code:
+
+```python
+def selectionSort(array):
+    length = len(array)
+    for i in range(length):
+        min = i
+        for j in range(i+1,length):
+            if array[j] < array[min]:
+                min = j
+        array[i],array[min] = array[min], array[i]
+    return array
+```
+
 #### 3. **Insertion Sort**
 
 Insertion Sort builds the sorted array one element at a time by repeatedly taking the next element and inserting it into its correct position. While it has a worst-case time complexity of \(O(n^2)\), it performs well on small or nearly sorted datasets, with an average time complexity of \(O(n^2)\) and a best-case complexity of \(O(n)\).
+
+Here is a simple Python code:
+
+```python
+def insertionSort(array):
+    length = len(array)
+    for i in range(1,length):
+        index = i
+        cur = array[i]
+        for j in range(i-1, -1, -1):
+            if array[j] > cur:
+                array[j+1] = array[j]
+                index = j
+            else:
+                break
+        array[index] = cur
+    return array
+```
 
 #### 4. **Merge Sort**
 
 Merge Sort is a divide-and-conquer algorithm that recursively splits the list into halves until each sublist contains a single element, then merges the sublists to produce a sorted list. It has a time complexity of \(O(n \log n)\), making it efficient for large datasets. Merge Sort is stable and works well with linked lists and external storage.
 
+Here is a simple Python code:
+
+```python
+def mergeSort(array):
+    if len(array) <= 1:
+        return array
+    
+    mid = len(array) // 2
+    left = mergeSort(array[:mid])
+    right = mergeSort(array[mid:])
+    
+    return merge(left, right)
+
+def merge(left, right):
+    result = []
+    i = j = 0
+    
+    while i < len(left) and j < len(right):
+        if left[i] <= right[j]:
+            result.append(left[i])
+            i += 1
+        else:
+            result.append(right[j])
+            j += 1
+    
+    result.extend(left[i:])
+    result.extend(right[j:])
+    return result
+```
+
 #### 5. **Quick Sort**
 
 Quick Sort, another divide-and-conquer algorithm, selects a 'pivot' element and partitions the array into elements less than the pivot and those greater than the pivot. The process is recursively applied to the sub-arrays. Quick Sort has an average-case time complexity of \(O(n \log n)\), but its worst-case complexity can be \(O(n^2)\) if the pivot selection is poor. Nevertheless, it is one of the most efficient and widely used sorting algorithms.
+
+Here is a simple Python code:
+
+```python
+def quickSort(array):
+    if len(array) <= 1:
+        return array
+    
+    pivot = array[len(array) // 2]
+    left = [x for x in array if x < pivot]
+    middle = [x for x in array if x == pivot]
+    right = [x for x in array if x > pivot]
+    
+    return quickSort(left) + middle + quickSort(right)
+```
 
 ### Non-Comparison-Based Sorting Algorithms
 
@@ -55,13 +139,133 @@ Quick Sort, another divide-and-conquer algorithm, selects a 'pivot' element and 
 
 Counting Sort is an integer sorting algorithm that counts the occurrences of each unique element. It then calculates the positions of elements in the sorted array based on these counts. With a time complexity of \(O(n + k)\), where \(k\) is the range of the input, Counting Sort is highly efficient for datasets with a limited range of integers. However, it is not suitable for sorting floating-point numbers or strings.
 
+Here is a simple Python code:
+
+```python
+def countingSort(array):
+    if not array:
+        return array
+    
+    # Find the range of input array
+    max_val = max(array)
+    min_val = min(array)
+    range_val = max_val - min_val + 1
+    
+    # Initialize the counting array
+    count = [0] * range_val
+    output = [0] * len(array)
+    
+    # Store count of each element
+    for num in array:
+        count[num - min_val] += 1
+    
+    # Modify count array to store actual positions
+    for i in range(1, len(count)):
+        count[i] += count[i - 1]
+    
+    # Build the output array
+    for num in reversed(array):
+        output[count[num - min_val] - 1] = num
+        count[num - min_val] -= 1
+    
+    return output
+```
+
 #### 2. **Radix Sort**
 
 Radix Sort processes each digit of the numbers, starting from the least significant digit to the most significant digit, using a stable sub-sorting algorithm like Counting Sort. With a time complexity of \(O(d \cdot (n + k))\), where \(d\) is the number of digits and \(k\) is the range of the digits, Radix Sort is efficient for large datasets with uniformly distributed integers.
 
+Here is a simple Python code:
+
+```python
+def radixSort(array):
+    if not array:
+        return array
+    
+    # Find the maximum number to know number of digits
+    max_num = max(array)
+    
+    # Do counting sort for every digit
+    exp = 1
+    while max_num // exp > 0:
+        countingSortForRadix(array, exp)
+        exp *= 10
+    
+    return array
+
+def countingSortForRadix(array, exp):
+    n = len(array)
+    output = [0] * n
+    count = [0] * 10
+    
+    # Store count of occurrences in count[]
+    for i in range(n):
+        index = array[i] // exp
+        count[index % 10] += 1
+    
+    # Change count[i] so that count[i] contains actual
+    # position of this digit in output[]
+    for i in range(1, 10):
+        count[i] += count[i - 1]
+    
+    # Build the output array
+    i = n - 1
+    while i >= 0:
+        index = array[i] // exp
+        output[count[index % 10] - 1] = array[i]
+        count[index % 10] -= 1
+        i -= 1
+    
+    # Copy the output array to array[]
+    for i in range(n):
+        array[i] = output[i]
+```
+
 #### 3. **Bucket Sort**
 
 Bucket Sort distributes the elements into several 'buckets' and then sorts each bucket individually, usually with another sorting algorithm like Insertion Sort. The sorted buckets are then concatenated to form the final sorted array. It has an average-case time complexity of \(O(n + k)\), making it effective for uniformly distributed data.
+
+Here is a simple Python code:
+
+```python
+def bucketSort(array):
+    if not array:
+        return array
+    
+    # Find minimum and maximum values
+    max_val, min_val = max(array), min(array)
+    
+    # Number of buckets, using array length as default
+    bucket_range = (max_val - min_val) / len(array)
+    
+    # Create empty buckets
+    buckets = [[] for _ in range(len(array) + 1)]
+    
+    # Put array elements in different buckets
+    for num in array:
+        # Handle the case when max_val equals min_val
+        if max_val == min_val:
+            bucket_index = 0
+        else:
+            bucket_index = int((num - min_val) / bucket_range)
+        # Handle edge case for maximum value
+        if bucket_index == len(buckets):
+            bucket_index -= 1
+        buckets[bucket_index].append(num)
+    
+    # Sort individual buckets
+    for bucket in buckets:
+        bucket.sort()
+    
+    # Concatenate all buckets into array
+    index = 0
+    for bucket in buckets:
+        for num in bucket:
+            array[index] = num
+            index += 1
+    
+    return array
+```
 
 ## Conclusion
 
