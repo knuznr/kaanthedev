@@ -48,17 +48,13 @@ export default function Page() {
         hey, I'm kaan! 👋
       </h1>
       <p className="prose prose-neutral dark:prose-invert">
-        {`I am a software developer with a deep passion for coding, coffee, and technology.
-        
-        Whether it’s writing clean, efficient code or exploring the latest advancements in technology, I am always eager to learn and innovate. 
-        
-        When I’m not immersed in coding, you’ll find me enjoying a good cup of coffee, which fuels my creativity and productivity. 
-        
-        My passion for technology goes beyond just writing code; I am enthusiastic about understanding how things work and finding ways to make them better. With a keen eye for detail and a commitment to excellence, I strive to create software solutions that are not only functional but also user-friendly. 
-        
-        I am excited about the endless possibilities that technology offers and look forward to contributing to projects that make a difference.
-        
-        Feel free to `}
+        {`Hey there! 👋 I'm a software developer who loves turning ideas into code.
+
+I'm all about building cool stuff with the latest tech. Currently exploring web development and AI applications and always excited to learn something new.
+
+When I'm not coding, you'll find me reading tech blogs, contributing to open source, or planning my next project.
+
+Feel free to `}
         <Link href="mailto:me@kaanthe.dev">contact</Link>
         {` me!`}
       </p>
