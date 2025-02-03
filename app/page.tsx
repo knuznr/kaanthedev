@@ -45,10 +45,10 @@ export default function Page() {
   return (
     <section>
       <h1 className="mb-8 text-2xl font-medium tracking-tighter">
-        hey, I'm kaan! 👋
+        hey there, I'm kaan! 👋
       </h1>
       <p className="prose prose-neutral dark:prose-invert">
-        {`Hey there! 👋 I'm a software developer who loves turning ideas into code.
+        {`I'm a software developer who loves turning ideas into code.
 
 I'm all about building cool stuff with the latest tech. Currently exploring web development and AI applications and always excited to learn something new.
 

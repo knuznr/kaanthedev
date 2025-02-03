@@ -26,7 +26,7 @@ Sorting algorithms can be broadly categorized into two types: comparison-based a
 
 #### 1. **Bubble Sort**
 
-Bubble Sort is one of the simplest sorting algorithms. It repeatedly steps through the list, compares adjacent elements, and swaps them if they are in the wrong order. This process continues until the list is sorted. While easy to understand and implement, Bubble Sort is inefficient for large datasets, with a time complexity of \(O(n^2)\).
+Bubble Sort is one of the simplest sorting algorithms. It repeatedly steps through the list, compares adjacent elements, and swaps them if they are in the wrong order. This process continues until the list is sorted. While easy to understand and implement, Bubble Sort is inefficient for large datasets, with a time complexity of <Latex>$O(n^2)$</Latex>.
 
 Here is a simple Python code:
 
@@ -42,7 +42,7 @@ def bubbleSort(array):
 
 #### 2. **Selection Sort**
 
-Selection Sort divides the list into a sorted and an unsorted region. It repeatedly selects the smallest (or largest) element from the unsorted region and moves it to the sorted region. Like Bubble Sort, Selection Sort has a time complexity of \(O(n^2)\), making it impractical for large datasets.
+Selection Sort divides the list into a sorted and an unsorted region. It repeatedly selects the smallest (or largest) element from the unsorted region and moves it to the sorted region. Like Bubble Sort, Selection Sort has a time complexity of <Latex>$O(n^2)$</Latex>, making it impractical for large datasets.
 
 Here is a simple Python code:
 
@@ -60,7 +60,7 @@ def selectionSort(array):
 
 #### 3. **Insertion Sort**
 
-Insertion Sort builds the sorted array one element at a time by repeatedly taking the next element and inserting it into its correct position. While it has a worst-case time complexity of \(O(n^2)\), it performs well on small or nearly sorted datasets, with an average time complexity of \(O(n^2)\) and a best-case complexity of \(O(n)\).
+Insertion Sort builds the sorted array one element at a time by repeatedly taking the next element and inserting it into its correct position. While it has a worst-case time complexity of <Latex>$O(n^2)$</Latex>, it performs well on small or nearly sorted datasets, with an average time complexity of <Latex>$O(n^2)$</Latex> and a best-case complexity of <Latex>$O(n)$</Latex>.
 
 Here is a simple Python code:
 
@@ -82,7 +82,7 @@ def insertionSort(array):
 
 #### 4. **Merge Sort**
 
-Merge Sort is a divide-and-conquer algorithm that recursively splits the list into halves until each sublist contains a single element, then merges the sublists to produce a sorted list. It has a time complexity of \(O(n \log n)\), making it efficient for large datasets. Merge Sort is stable and works well with linked lists and external storage.
+Merge Sort is a divide-and-conquer algorithm that recursively splits the list into halves until each sublist contains a single element, then merges the sublists to produce a sorted list. It has a time complexity of <Latex>$O(n \log n)$</Latex>, making it efficient for large datasets. Merge Sort is stable and works well with linked lists and external storage.
 
 Here is a simple Python code:
 
@@ -116,7 +116,7 @@ def merge(left, right):
 
 #### 5. **Quick Sort**
 
-Quick Sort, another divide-and-conquer algorithm, selects a 'pivot' element and partitions the array into elements less than the pivot and those greater than the pivot. The process is recursively applied to the sub-arrays. Quick Sort has an average-case time complexity of \(O(n \log n)\), but its worst-case complexity can be \(O(n^2)\) if the pivot selection is poor. Nevertheless, it is one of the most efficient and widely used sorting algorithms.
+Quick Sort, another divide-and-conquer algorithm, selects a 'pivot' element and partitions the array into elements less than the pivot and those greater than the pivot. The process is recursively applied to the sub-arrays. Quick Sort has an average-case time complexity of <Latex>$O(n \log n)$</Latex>, but its worst-case complexity can be <Latex>$O(n^2)$</Latex> if the pivot selection is poor. Nevertheless, it is one of the most efficient and widely used sorting algorithms.
 
 Here is a simple Python code:
 
@@ -137,7 +137,7 @@ def quickSort(array):
 
 #### 1. **Counting Sort**
 
-Counting Sort is an integer sorting algorithm that counts the occurrences of each unique element. It then calculates the positions of elements in the sorted array based on these counts. With a time complexity of \(O(n + k)\), where \(k\) is the range of the input, Counting Sort is highly efficient for datasets with a limited range of integers. However, it is not suitable for sorting floating-point numbers or strings.
+Counting Sort is an integer sorting algorithm that counts the occurrences of each unique element. It then calculates the positions of elements in the sorted array based on these counts. With a time complexity of <Latex>$O(n + k)$</Latex>, where <Latex>$k$</Latex> is the range of the input, Counting Sort is highly efficient for datasets with a limited range of integers. However, it is not suitable for sorting floating-point numbers or strings.
 
 Here is a simple Python code:
 
@@ -173,7 +173,7 @@ def countingSort(array):
 
 #### 2. **Radix Sort**
 
-Radix Sort processes each digit of the numbers, starting from the least significant digit to the most significant digit, using a stable sub-sorting algorithm like Counting Sort. With a time complexity of \(O(d \cdot (n + k))\), where \(d\) is the number of digits and \(k\) is the range of the digits, Radix Sort is efficient for large datasets with uniformly distributed integers.
+Radix Sort processes each digit of the numbers, starting from the least significant digit to the most significant digit, using a stable sub-sorting algorithm like Counting Sort. With a time complexity of <Latex>$O(d \cdot (n + k))$</Latex>, where <Latex>$d$</Latex> is the number of digits and <Latex>$k$</Latex> is the range of the digits, Radix Sort is efficient for large datasets with uniformly distributed integers.
 
 Here is a simple Python code:
 
@@ -223,7 +223,7 @@ def countingSortForRadix(array, exp):
 
 #### 3. **Bucket Sort**
 
-Bucket Sort distributes the elements into several 'buckets' and then sorts each bucket individually, usually with another sorting algorithm like Insertion Sort. The sorted buckets are then concatenated to form the final sorted array. It has an average-case time complexity of \(O(n + k)\), making it effective for uniformly distributed data.
+Bucket Sort distributes the elements into several 'buckets' and then sorts each bucket individually, usually with another sorting algorithm like Insertion Sort. The sorted buckets are then concatenated to form the final sorted array. It has an average-case time complexity of <Latex>$O(n + k)$</Latex>, making it effective for uniformly distributed data.
 
 Here is a simple Python code:
 
