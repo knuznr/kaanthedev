@@ -1,34 +1,37 @@
 ---
 title: "Types of Sorting Algorithms"
 publishedAt: "2024-07-23"
-summary: "Simple explanation of sorting algorithms and their types"
-image: /images/sort/sorting.png
+summary: "A detailed guide to sorting algorithms, their types, and when to use them"
+image: /images/sorting.png
 ---
 
 <Image
-  alt={`Cheatsheet`}
-  src={`/images/sort/sorting.png`}
+  alt={`Sorting Algorithms Cheatsheet`}
+  src={`/images/sorting.png`}
   width={1280}
   height={720}
 />
 
-Sorting algorithms play a critical role in computer science, enabling the efficient organization and retrieval of data. They are fundamental to various applications, from database management systems to search engines, and form the backbone of many computational tasks. The efficiency of these algorithms is often measured by their time complexity, which indicates how the running time of an algorithm increases with the size of the input data.
+Sorting algorithms are the unsung heroes of computer science, turning chaotic data into organized, usable information. **From powering search engines to optimizing databases, they’re everywhere—quietly making your digital life faster and smoother.** These algorithms vary widely in efficiency, complexity, and use cases, measured by their time complexity—how runtime scales with input size. **In this guide, we’ll explore the main types of sorting algorithms, break down their strengths and weaknesses, and help you decide which one fits your needs.**
 
 ## What is Time Complexity?
 
-I have prepared a blog about [Time Complexity](/blog/time-complexity). You can check it out here and get some ideas.
+**Sorting efficiency hinges on time complexity—how long an algorithm takes as data grows.** For a deep dive, check out my [Time Complexity blog](/blog/time-complexity). It’s packed with details to level up your understanding.
 
 ## Types of Sorting Algorithms
 
-Sorting algorithms can be broadly categorized into two types: comparison-based and non-comparison-based. Comparison-based algorithms sort elements by comparing them, while non-comparison-based algorithms leverage alternative techniques like counting or hashing.
+Sorting algorithms split into two big camps: **comparison-based** (elements are compared to sort) and **non-comparison-based** (using counting or digit tricks). Let’s dive in.
 
 ### Comparison-Based Sorting Algorithms
 
-#### 1. **Bubble Sort**
+#### 1. **Bubble Sort – <Latex>O(n^2)</Latex>**
 
-Bubble Sort is one of the simplest sorting algorithms. It repeatedly steps through the list, compares adjacent elements, and swaps them if they are in the wrong order. This process continues until the list is sorted. While easy to understand and implement, Bubble Sort is inefficient for large datasets, with a time complexity of <Latex>$O(n^2)$</Latex>.
+Bubble Sort is the beginner’s classic. It repeatedly compares adjacent elements and swaps them if they’re out of order, “bubbling” larger values to the end. **It’s like sorting a deck of cards by repeatedly swapping neighbors.**
 
-Here is a simple Python code:
+- **Time Complexity**: <Latex>O(n^2)</Latex> (worst and average).
+- **Pros**: Simple to code, intuitive.
+- **Cons**: Painfully slow for big lists—think \(n = 1,000\) taking a million steps.
+- **Best For**: Tiny datasets or teaching.
 
 ```python
 def bubbleSort(array):
@@ -40,34 +43,40 @@ def bubbleSort(array):
     return array
 ```
 
-#### 2. **Selection Sort**
+#### 2. **Selection Sort – <Latex>O(n^2)</Latex>**
 
-Selection Sort divides the list into a sorted and an unsorted region. It repeatedly selects the smallest (or largest) element from the unsorted region and moves it to the sorted region. Like Bubble Sort, Selection Sort has a time complexity of <Latex>$O(n^2)$</Latex>, making it impractical for large datasets.
+Selection Sort splits the list into sorted and unsorted parts, repeatedly picking the smallest (or largest) unsorted element and adding it to the sorted side. **Imagine picking the shortest person from a crowd, one by one.**
 
-Here is a simple Python code:
+- **Time Complexity**: <Latex>O(n^2)</Latex> (all cases).
+- **Pros**: Minimal swaps, in-place sorting.
+- **Cons**: Still slow for large data—doesn’t adapt.
+- **Best For**: Small lists or when swap cost is high.
 
 ```python
 def selectionSort(array):
     length = len(array)
     for i in range(length):
         min = i
-        for j in range(i+1,length):
+        for j in range(i+1, length):
             if array[j] < array[min]:
                 min = j
-        array[i],array[min] = array[min], array[i]
+        array[i], array[min] = array[min], array[i]
     return array
 ```
 
-#### 3. **Insertion Sort**
+#### 3. **Insertion Sort – <Latex>O(n^2)</Latex>**
 
-Insertion Sort builds the sorted array one element at a time by repeatedly taking the next element and inserting it into its correct position. While it has a worst-case time complexity of <Latex>$O(n^2)$</Latex>, it performs well on small or nearly sorted datasets, with an average time complexity of <Latex>$O(n^2)$</Latex> and a best-case complexity of <Latex>$O(n)$</Latex>.
+Insertion Sort builds a sorted list one item at a time, inserting each new element into its proper spot. **It’s like sorting a hand of cards as you pick them up.**
 
-Here is a simple Python code:
+- **Time Complexity**: <Latex>O(n^2)</Latex> (worst and average), <Latex>O(n)</Latex> (best, nearly sorted).
+- **Pros**: Fast for small or nearly sorted data, stable.
+- **Cons**: Struggles with large, random lists.
+- **Best For**: Small datasets or online sorting (data arriving incrementally).
 
 ```python
 def insertionSort(array):
     length = len(array)
-    for i in range(1,length):
+    for i in range(1, length):
         index = i
         cur = array[i]
         for j in range(i-1, -1, -1):
@@ -80,27 +89,27 @@ def insertionSort(array):
     return array
 ```
 
-#### 4. **Merge Sort**
+#### 4. **Merge Sort – <Latex>O(n \log n)</Latex>**
 
-Merge Sort is a divide-and-conquer algorithm that recursively splits the list into halves until each sublist contains a single element, then merges the sublists to produce a sorted list. It has a time complexity of <Latex>$O(n \log n)$</Latex>, making it efficient for large datasets. Merge Sort is stable and works well with linked lists and external storage.
+Merge Sort divides the list into halves, sorts them recursively, and merges them back together. **Picture splitting a messy stack of papers into smaller piles, sorting each, then combining them.**
 
-Here is a simple Python code:
+- **Time Complexity**: <Latex>O(n \log n)</Latex> (all cases).
+- **Pros**: Stable, predictable, great for linked lists or external storage.
+- **Cons**: Needs extra space (<Latex>O(n)</Latex>).
+- **Best For**: Large datasets, memory isn’t tight.
 
 ```python
 def mergeSort(array):
     if len(array) <= 1:
         return array
-    
     mid = len(array) // 2
     left = mergeSort(array[:mid])
     right = mergeSort(array[mid:])
-    
     return merge(left, right)
 
 def merge(left, right):
     result = []
     i = j = 0
-    
     while i < len(left) and j < len(right):
         if left[i] <= right[j]:
             result.append(left[i])
@@ -108,165 +117,208 @@ def merge(left, right):
         else:
             result.append(right[j])
             j += 1
-    
     result.extend(left[i:])
     result.extend(right[j:])
     return result
 ```
 
-#### 5. **Quick Sort**
+#### 5. **Quick Sort – <Latex>O(n \log n)</Latex>**
 
-Quick Sort, another divide-and-conquer algorithm, selects a 'pivot' element and partitions the array into elements less than the pivot and those greater than the pivot. The process is recursively applied to the sub-arrays. Quick Sort has an average-case time complexity of <Latex>$O(n \log n)$</Latex>, but its worst-case complexity can be <Latex>$O(n^2)$</Latex> if the pivot selection is poor. Nevertheless, it is one of the most efficient and widely used sorting algorithms.
+Quick Sort picks a pivot, partitions the array around it, and recursively sorts the partitions. **Think of it as organizing a crowd by picking a height and splitting taller and shorter groups.**
 
-Here is a simple Python code:
+- **Time Complexity**: <Latex>O(n \log n)</Latex> (average), <Latex>O(n^2)</Latex> (worst, bad pivot).
+- **Pros**: Fast in practice, in-place sorting.
+- **Cons**: Worst-case is rare but possible; not stable.
+- **Best For**: General-purpose sorting, large datasets.
 
 ```python
 def quickSort(array):
     if len(array) <= 1:
         return array
-    
     pivot = array[len(array) // 2]
     left = [x for x in array if x < pivot]
     middle = [x for x in array if x == pivot]
     right = [x for x in array if x > pivot]
-    
     return quickSort(left) + middle + quickSort(right)
 ```
 
 ### Non-Comparison-Based Sorting Algorithms
 
-#### 1. **Counting Sort**
+#### 1. **Counting Sort – <Latex>O(n + k)</Latex>**
 
-Counting Sort is an integer sorting algorithm that counts the occurrences of each unique element. It then calculates the positions of elements in the sorted array based on these counts. With a time complexity of <Latex>$O(n + k)$</Latex>, where <Latex>$k$</Latex> is the range of the input, Counting Sort is highly efficient for datasets with a limited range of integers. However, it is not suitable for sorting floating-point numbers or strings.
+Counting Sort counts occurrences of each value and uses those counts to place elements in order. **It’s like sorting marbles by color into pre-labeled bins.**
 
-Here is a simple Python code:
+- **Time Complexity**: <Latex>O(n + k)</Latex> (<Latex>k</Latex> is value range).
+- **Pros**: Lightning-fast for small integer ranges.
+- **Cons**: Useless for floats or strings; needs extra space.
+- **Best For**: Integers with a tight range (e.g., 0-100).
 
 ```python
 def countingSort(array):
     if not array:
         return array
-    
-    # Find the range of input array
     max_val = max(array)
     min_val = min(array)
     range_val = max_val - min_val + 1
-    
-    # Initialize the counting array
     count = [0] * range_val
     output = [0] * len(array)
-    
-    # Store count of each element
     for num in array:
         count[num - min_val] += 1
-    
-    # Modify count array to store actual positions
     for i in range(1, len(count)):
         count[i] += count[i - 1]
-    
-    # Build the output array
     for num in reversed(array):
         output[count[num - min_val] - 1] = num
         count[num - min_val] -= 1
-    
     return output
 ```
 
-#### 2. **Radix Sort**
+#### 2. **Radix Sort – <Latex>O(d \cdot (n + k))</Latex>**
 
-Radix Sort processes each digit of the numbers, starting from the least significant digit to the most significant digit, using a stable sub-sorting algorithm like Counting Sort. With a time complexity of <Latex>$O(d \cdot (n + k))$</Latex>, where <Latex>$d$</Latex> is the number of digits and <Latex>$k$</Latex> is the range of the digits, Radix Sort is efficient for large datasets with uniformly distributed integers.
+Radix Sort sorts digit by digit, from least to most significant, often using Counting Sort as a helper. **Imagine sorting phone numbers by area code, then prefix.**
 
-Here is a simple Python code:
+- **Time Complexity**: <Latex>O(d \cdot (n + k))</Latex> (<Latex>d</Latex> is digits, <Latex>k</Latex> is digit range).
+- **Pros**: Great for large integer sets, stable.
+- **Cons**: Limited to numbers, extra space needed.
+- **Best For**: Uniformly distributed integers (e.g., IDs).
 
 ```python
 def radixSort(array):
     if not array:
         return array
-    
-    # Find the maximum number to know number of digits
     max_num = max(array)
-    
-    # Do counting sort for every digit
     exp = 1
     while max_num // exp > 0:
         countingSortForRadix(array, exp)
         exp *= 10
-    
     return array
 
 def countingSortForRadix(array, exp):
     n = len(array)
     output = [0] * n
     count = [0] * 10
-    
-    # Store count of occurrences in count[]
     for i in range(n):
         index = array[i] // exp
         count[index % 10] += 1
-    
-    # Change count[i] so that count[i] contains actual
-    # position of this digit in output[]
     for i in range(1, 10):
         count[i] += count[i - 1]
-    
-    # Build the output array
     i = n - 1
     while i >= 0:
         index = array[i] // exp
         output[count[index % 10] - 1] = array[i]
         count[index % 10] -= 1
         i -= 1
-    
-    # Copy the output array to array[]
     for i in range(n):
         array[i] = output[i]
 ```
 
-#### 3. **Bucket Sort**
+#### 3. **Bucket Sort – <Latex>O(n + k)</Latex>**
 
-Bucket Sort distributes the elements into several 'buckets' and then sorts each bucket individually, usually with another sorting algorithm like Insertion Sort. The sorted buckets are then concatenated to form the final sorted array. It has an average-case time complexity of <Latex>$O(n + k)$</Latex>, making it effective for uniformly distributed data.
+Bucket Sort scatters elements into buckets, sorts each bucket (often with Insertion Sort), and merges them. **Picture sorting coins into jars by value, then arranging each jar.**
 
-Here is a simple Python code:
+- **Time Complexity**: <Latex>O(n + k)</Latex> (average, <Latex>k</Latex> is bucket count).
+- **Pros**: Fast for uniform data, adaptable.
+- **Cons**: Poor for skewed data; worst case <Latex>O(n^2)</Latex>.
+- **Best For**: Uniformly distributed numbers (e.g., floats 0-1).
 
 ```python
 def bucketSort(array):
     if not array:
         return array
-    
-    # Find minimum and maximum values
     max_val, min_val = max(array), min(array)
-    
-    # Number of buckets, using array length as default
     bucket_range = (max_val - min_val) / len(array)
-    
-    # Create empty buckets
     buckets = [[] for _ in range(len(array) + 1)]
-    
-    # Put array elements in different buckets
     for num in array:
-        # Handle the case when max_val equals min_val
         if max_val == min_val:
             bucket_index = 0
         else:
             bucket_index = int((num - min_val) / bucket_range)
-        # Handle edge case for maximum value
         if bucket_index == len(buckets):
             bucket_index -= 1
         buckets[bucket_index].append(num)
-    
-    # Sort individual buckets
     for bucket in buckets:
         bucket.sort()
-    
-    # Concatenate all buckets into array
     index = 0
     for bucket in buckets:
         for num in bucket:
             array[index] = num
             index += 1
-    
     return array
 ```
 
+### Comparison Table
+
+Here’s how these algorithms stack up:
+
+<table>
+  <thead>
+    <tr>
+      <th>Algorithm</th>
+      <th>Time Complexity (Avg)</th>
+      <th>Space Complexity</th>
+      <th>Stable?</th>
+      <th>Best Use Case</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Bubble Sort</td>
+      <td><Latex>O(n^2)</Latex></td>
+      <td><Latex>O(1)</Latex></td>
+      <td>Yes</td>
+      <td>Teaching, tiny lists</td>
+    </tr>
+    <tr>
+      <td>Selection Sort</td>
+      <td><Latex>O(n^2)</Latex></td>
+      <td><Latex>O(1)</Latex></td>
+      <td>No</td>
+      <td>Low swap cost</td>
+    </tr>
+    <tr>
+      <td>Insertion Sort</td>
+      <td><Latex>O(n^2)</Latex></td>
+      <td><Latex>O(1)</Latex></td>
+      <td>Yes</td>
+      <td>Nearly sorted data</td>
+    </tr>
+    <tr>
+      <td>Merge Sort</td>
+      <td><Latex>O(n \log n)</Latex></td>
+      <td><Latex>O(n)</Latex></td>
+      <td>Yes</td>
+      <td>Large datasets</td>
+    </tr>
+    <tr>
+      <td>Quick Sort</td>
+      <td><Latex>O(n \log n)</Latex></td>
+      <td><Latex>O(\log n)</Latex></td>
+      <td>No</td>
+      <td>General purpose</td>
+    </tr>
+    <tr>
+      <td>Counting Sort</td>
+      <td><Latex>O(n + k)</Latex></td>
+      <td><Latex>O(n + k)</Latex></td>
+      <td>Yes</td>
+      <td>Small integer range</td>
+    </tr>
+    <tr>
+      <td>Radix Sort</td>
+      <td><Latex>O(d \cdot (n + k))</Latex></td>
+      <td><Latex>O(n + k)</Latex></td>
+      <td>Yes</td>
+      <td>Large integers</td>
+    </tr>
+    <tr>
+      <td>Bucket Sort</td>
+      <td><Latex>O(n + k)</Latex></td>
+      <td><Latex>O(n + k)</Latex></td>
+      <td>Yes</td>
+      <td>Uniform data</td>
+    </tr>
+  </tbody>
+</table>
+
 ## Conclusion
 
-Sorting algorithms are a cornerstone of computer science, with each type offering unique strengths and being suited for different applications. From simple algorithms like Bubble Sort to more complex ones like Quick Sort and Radix Sort, these methods ensure that data can be efficiently organized, accessed, and analyzed. Understanding the mechanisms and applications of sorting algorithms is essential for anyone involved in the field of computer science, as they provide the foundation for many computational tasks and technologies in our increasingly digital world.
+Sorting algorithms are the backbone of data organization, each with unique trade-offs. **From the slow-but-steady Bubble Sort to the blazing-fast Quick Sort or Radix Sort, your choice depends on your data and goals.** Need something simple? Go with Insertion Sort. Handling millions of records? Merge Sort or Quick Sort has your back. Got integers? Counting Sort might be your ace.

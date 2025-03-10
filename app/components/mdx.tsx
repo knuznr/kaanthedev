@@ -3,6 +3,8 @@ import Image from 'next/image';
 import { MDXRemote } from 'next-mdx-remote/rsc';
 import { highlight } from 'sugar-high';
 import React from 'react';
+import { renderToString } from "katex";
+import "katex/dist/katex.min.css";
 
 function Table({ data }) {
   let headers = data.headers.map((header, index) => (
@@ -161,11 +163,17 @@ let components = {
   Table,
 };
 
+export const Latex = ({ children }: { children: string }) => {
+  const html = renderToString(children, { throwOnError: false });
+  return <span dangerouslySetInnerHTML={{ __html: html }} />;
+};
+
 export function CustomMDX(props) {
   return (
     <MDXRemote
       {...props}
-      components={{ ...components, ...(props.components || {}) }}
+      components={{ Latex, ...components, ...(props.components || {}) }}
     />
   );
+  
 }
