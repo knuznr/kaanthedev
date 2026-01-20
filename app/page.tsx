@@ -55,7 +55,7 @@ I'm all about building cool stuff with the latest tech. Currently exploring web 
 When I'm not coding, you'll find me reading tech blogs, contributing to open source, or planning my next project.
 
 Feel free to `}
-        <Link href="mailto:me@kaanthe.dev">contact</Link>
+        <Link href="mailto:me@kaanuzuner.dev">contact</Link>
         {` me!`}
       </p>
       <div className="my-8 flex w-full flex-col space-y-4">
