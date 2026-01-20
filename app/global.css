@@ -1,5 +1,22 @@
 @import 'tailwindcss';
 
+/* JetBrains Mono CSS Variable Setup */
+:root {
+  --font-jetbrains: var(--font-jetbrains);
+}
+
+/* Apply JetBrains Mono globally */
+* {
+  font-family: var(--font-jetbrains), 'SF Mono', 'Monaco', 'Inconsolata', monospace;
+}
+
+body {
+  font-family: var(--font-jetbrains), 'SF Mono', 'Monaco', 'Inconsolata', monospace;
+  font-weight: 400;
+  letter-spacing: -0.005em;
+}
+
+/* Rest of your existing styles... */
 ::selection {
   background-color: #47a3f3;
   color: #fefefe;
@@ -33,9 +50,21 @@ html {
   min-width: 360px;
 }
 
+/* Improve readability for headers */
+h1, h2, h3, h4, h5, h6 {
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  font-family: var(--font-jetbrains), 'SF Mono', 'Monaco', 'Inconsolata', monospace;
+}
+
+/* Code elements */
+code, pre, .font-mono {
+  font-family: var(--font-jetbrains), 'SF Mono', 'Monaco', 'Inconsolata', monospace;
+  font-weight: 500;
+}
+
 .prose .anchor {
   @apply absolute invisible no-underline;
-
   margin-left: -1em;
   padding-right: 0.5em;
   width: 80%;
@@ -62,10 +91,14 @@ html {
 
 .prose pre {
   @apply bg-neutral-50 dark:bg-neutral-900 rounded-lg overflow-x-auto border border-neutral-200 dark:border-neutral-900 py-2 px-3 text-sm;
+  font-family: var(--font-jetbrains), 'SF Mono', 'Monaco', 'Inconsolata', monospace;
+  font-weight: 500;
 }
 
 .prose code {
   @apply px-1 py-0.5 rounded-lg;
+  font-family: var(--font-jetbrains), 'SF Mono', 'Monaco', 'Inconsolata', monospace;
+  font-weight: 500;
 }
 
 .prose pre code {
@@ -79,32 +112,32 @@ html {
 }
 
 .prose img {
-  /* Don't apply styles to next/image */
   @apply m-0;
 }
 
 .prose p {
   @apply my-4 text-neutral-800 dark:text-neutral-200;
+  line-height: 1.7;
 }
 
 .prose h1 {
-  @apply text-4xl font-medium tracking-tight mt-6 mb-2;
+  @apply text-4xl font-semibold tracking-tight mt-6 mb-2;
 }
 
 .prose h2 {
-  @apply text-xl font-medium tracking-tight mt-6 mb-2;
+  @apply text-xl font-semibold tracking-tight mt-6 mb-2;
 }
 
 .prose h3 {
-  @apply text-xl font-medium tracking-tight mt-6 mb-2;
+  @apply text-xl font-semibold tracking-tight mt-6 mb-2;
 }
 
 .prose h4 {
-  @apply text-lg font-medium tracking-tight mt-6 mb-2;
+  @apply text-lg font-semibold tracking-tight mt-6 mb-2;
 }
 
 .prose strong {
-  @apply font-medium;
+  @apply font-semibold;
 }
 
 .prose ul {
@@ -116,7 +149,6 @@ html {
 }
 
 .prose > :first-child {
-  /* Override removing top margin, causing layout shift */
   margin-top: 1.25em !important;
   margin-bottom: 1.25em !important;
 }
@@ -126,16 +158,16 @@ pre::-webkit-scrollbar {
 }
 
 pre {
-  -ms-overflow-style: none; /* IE and Edge */
-  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none;
+  scrollbar-width: none;
 }
 
-/* Remove Safari input shadow on mobile */
 input[type='text'],
 input[type='email'] {
   -webkit-appearance: none;
   -moz-appearance: none;
   appearance: none;
+  font-family: var(--font-jetbrains), 'SF Mono', 'Monaco', 'Inconsolata', monospace;
 }
 
 table {
@@ -143,8 +175,23 @@ table {
   max-width: fit-content;
   overflow-x: auto;
   white-space: nowrap;
+  font-family: var(--font-jetbrains), 'SF Mono', 'Monaco', 'Inconsolata', monospace;
 }
 
 .title {
   text-wrap: balance;
+  font-weight: 600;
+}
+
+/* Navigation and interactive elements */
+nav, .nav, button, .btn {
+  font-family: var(--font-jetbrains), 'SF Mono', 'Monaco', 'Inconsolata', monospace;
+  font-weight: 500;
+}
+
+blockquote {
+  font-family: var(--font-jetbrains), 'SF Mono', 'Monaco', 'Inconsolata', monospace;
+  font-style: normal;
+  font-weight: 400;
+  letter-spacing: -0.005em;
 }
