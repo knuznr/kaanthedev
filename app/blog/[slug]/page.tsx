@@ -1,6 +1,7 @@
 // app/blog/[slug]/page.tsx
 import { notFound } from "next/navigation";
 import { CustomMDX } from "app/components/mdx";
+import { Comments } from "app/components/comments";
 import { formatDate, getBlogPosts } from "app/blog/utils";
 import { baseUrl } from "app/sitemap";
 
@@ -94,6 +95,7 @@ export default function Blog({ params }) {
       <article className="prose">
         <CustomMDX source={post.content} />
       </article>
+      <Comments slug={post.slug} />
     </section>
   );
 }

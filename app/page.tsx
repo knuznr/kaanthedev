@@ -48,20 +48,26 @@ export default function Page() {
         hey there, I'm kaan! 👋
       </h1>
       <p className="prose prose-neutral dark:prose-invert">
-        {`I'm a software developer who loves turning ideas into code.
+        {`i'm a developer who codes stuff. mostly works 👨‍💻
 
-I'm all about building cool stuff with the latest tech. Currently exploring web development and AI applications and always excited to learn something new.
+currently into web dev and ai things. always trying to learn something new. sometimes it actually sticks.
 
-When I'm not coding, you'll find me reading tech blogs, contributing to open source, or planning my next project.
+when i'm not debugging, you'll find me scrolling tech blogs, contributing to open source, or procrastinating on that side project.
 
-Feel free to `}
-        <Link href="mailto:me@kaanuzuner.dev">contact</Link>
-        {` me!`}
+wanna collaborate or just chat? `}
+        <Link href="mailto:me@kaanuzuner.dev">hit me up</Link>
+        {`!`}
       </p>
+      <br></br>
+      <section>
+      <h1 className="mb-8 text-2xl font-medium tracking-tighter">
+        things i've written
+      </h1>
       <div className="my-8 flex w-full flex-col space-y-4">
         <BlogLink name="Explanation of 'Time Complexity'" slug="time-complexity" />
         <BlogLink name="Types of Sorting Algorithms" slug="sorting-algorithms" />
       </div>
+      </section>
     </section>
   );
 }
