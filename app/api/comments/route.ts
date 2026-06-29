@@ -1,18 +1,9 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { readFile, writeFile } from 'fs/promises';
 import { join } from 'path';
+import type { Comment } from '@/app/types/comment';
 
 const commentsFile = join(process.cwd(), 'public', 'data', 'comments.json');
-
-interface Comment {
-  id: string;
-  slug: string;
-  author: string;
-  authorImage?: string;
-  content: string;
-  createdAt: string;
-  approved: boolean;
-}
 
 // GET comments for a post
 export async function GET(request: NextRequest) {
@@ -65,7 +56,7 @@ export async function POST(request: NextRequest) {
       authorImage,
       content,
       createdAt: new Date().toISOString(),
-      approved: false, // Moderasyon için önce approved: false
+      approved: true,
     };
 
     try {

@@ -4,7 +4,12 @@ import { MDXRemote } from 'next-mdx-remote/rsc';
 import { highlight } from 'sugar-high';
 import React from 'react';
 import { renderToString } from "katex";
-import "katex/dist/katex.min.css";
+import type {
+  AnchorHTMLAttributes,
+  ImgHTMLAttributes,
+  ReactNode,
+} from "react";
+
 
 function Table({ data }) {
   let headers = data.headers.map((header, index) => (
@@ -47,7 +52,20 @@ function CustomLink(props) {
 }
 
 function RoundedImage(props) {
-  return <Image alt={props.alt} className="rounded-lg" {...props} />;
+  const { alt, src, className, ...rest } = props;
+
+  if (!src) {
+    return null;
+  }
+
+  return (
+    <Image
+      {...rest}
+      src={src}
+      alt={alt || ''}
+      className={['rounded-lg', className].filter(Boolean).join(' ')}
+    />
+  );
 }
 
 function Callout(props) {

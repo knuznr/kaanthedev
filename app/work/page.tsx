@@ -15,7 +15,7 @@ export default function WorkPage() {
       {/* Current Status */}
       <div className="mb-12">
         <h2 className="font-medium text-lg mb-6 tracking-tighter text-amber-600 dark:text-amber-500">
-          Currently Looking for Opportunities
+          currently looking for opportunities
         </h2>
         
         <div className="prose prose-neutral dark:prose-invert bg-neutral-50 dark:bg-neutral-900 rounded-lg p-6 border border-neutral-200 dark:border-neutral-800">

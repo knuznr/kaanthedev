@@ -6,6 +6,7 @@ import { Analytics } from '@vercel/analytics/react'
 import { SpeedInsights } from '@vercel/speed-insights/next'
 import Footer from './components/footer'
 import { baseUrl } from './sitemap'
+import "katex/dist/katex.min.css";
 
 // Configure JetBrains Mono
 const jetbrainsMono = JetBrains_Mono({

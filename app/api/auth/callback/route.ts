@@ -5,6 +5,8 @@ export async function GET(request: NextRequest) {
     const { searchParams } = new URL(request.url);
     const code = searchParams.get('code');
 
+    const rawReturnTo = request.cookies.get('auth_return_to')?.value || '/blog';
+    const returnTo = rawReturnTo.startsWith('/') && !rawReturnTo.startsWith('//') ? rawReturnTo : '/blog';
     if (!code) {
       return NextResponse.redirect(new URL('/blog', request.url));
     }
@@ -46,7 +48,8 @@ export async function GET(request: NextRequest) {
     const userData = await userResponse.json();
 
     // Create response and set cookie
-    const response = NextResponse.redirect(new URL('/blog', request.url));
+    const response = NextResponse.redirect(new URL(returnTo, request.url));
+    response.cookies.delete('auth_return_to');
     response.cookies.set('user', JSON.stringify({
       id: userData.id,
       name: userData.name || userData.login,
@@ -56,11 +59,11 @@ export async function GET(request: NextRequest) {
       httpOnly: false,
       maxAge: 30 * 24 * 60 * 60, // 30 days
       sameSite: 'lax',
+      path: '/',
     });
 
     return response;
   } catch (error) {
-    console.error('Auth callback error:', error);
     return NextResponse.redirect(new URL('/blog', request.url));
   }
 }
