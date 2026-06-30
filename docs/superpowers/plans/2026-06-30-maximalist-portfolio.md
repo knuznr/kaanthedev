@@ -2097,26 +2097,33 @@ import type { Metadata } from 'next'
 import { getBlogPosts, getPost, formatDate } from 'app/blog/utils'
 import { CustomMDX } from 'app/components/mdx'
 
-export const metadata: Metadata = {
-  title: 'Writing',
-  description: 'A post on web development, AI, and building things.',
-}
-
 export function generateStaticParams() {
   return getBlogPosts().map((post) => ({ slug: post.slug }))
 }
 
-export function generateMetadata({ params }): Promise<Metadata> {
-  const post = getPost(params.slug)
-  if (!post) return Promise.resolve({})
-  return Promise.resolve({
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ slug: string }>
+}): Promise<Metadata> {
+  const { slug } = await params
+  const post = getPost(slug)
+  if (!post) {
+    return { title: 'Writing', description: 'A post on web development, AI, and building things.' }
+  }
+  return {
     title: post.metadata.title,
     description: post.metadata.summary,
-  })
+  }
 }
 
-export default function PostPage({ params }: { params: { slug: string } }) {
-  const post = getPost(params.slug)
+export default async function PostPage({
+  params,
+}: {
+  params: Promise<{ slug: string }>
+}) {
+  const { slug } = await params
+  const post = getPost(slug)
   if (!post) notFound()
 
   return (
@@ -2149,7 +2156,7 @@ export default function PostPage({ params }: { params: { slug: string } }) {
 }
 ```
 
-Note: `generateMetadata({ params })` and `PostPage({ params })` signatures must match whatever the existing file uses (Next 16 may pass `params` as a Promise in canary). Read the existing file in Step 1 and mirror its exact `params` handling; if `params` is a Promise, `await` it before `getPost`.
+Note: Next.js 16 canary passes `params` as a `Promise` — `generateMetadata` and `PostPage` are `async` and `await params` before calling `getPost`. Do NOT export a static `metadata` const alongside `generateMetadata` (Next errors on both); the fallback title/description lives in `generateMetadata`'s not-found path. Keep `generateStaticParams`.
 
 - [ ] **Step 4: Restyle MDX components in `app/components/mdx.tsx`**
 
