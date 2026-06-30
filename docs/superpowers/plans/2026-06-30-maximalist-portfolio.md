@@ -644,7 +644,7 @@ import type { Variants } from 'framer-motion'
 
 export const fadeUp: Variants = {
   hidden: { opacity: 0, y: 28 },
-  show: { opacity: 1, y: 0, transition: { duration: 0.6, ease: [0.22, 1, 0.36, 1] } },
+  show: { opacity: 1, y: 0, transition: { duration: 0.6, ease: 'easeOut' } },
 }
 
 export const fadeIn: Variants = {
@@ -675,11 +675,8 @@ export function useActiveSection(ids: string[]): string {
   const [active, setActive] = useState(ids[0] ?? '')
 
   useEffect(() => {
+    const key = ids.join(',')
     const observers: IntersectionObserver[] = []
-    const handler = (id: string) => () => {
-      const el = document.getElementById(id)
-      if (el) setActive(id)
-    }
     ids.forEach((id) => {
       const el = document.getElementById(id)
       if (!el) return
@@ -694,9 +691,8 @@ export function useActiveSection(ids: string[]): string {
       obs.observe(el)
       observers.push(obs)
     })
-    void handler
     return () => observers.forEach((o) => o.disconnect())
-  }, [ids])
+  }, [key])
 
   return active
 }
@@ -763,6 +759,7 @@ git commit -m "feat: shared motion variants and theme/section hooks"
 - [ ] **Step 1: Create `app/components/section-heading.tsx`**
 
 ```tsx
+'use client'
 import { motion } from 'framer-motion'
 import { fadeUp, stagger, viewportOnce } from 'app/lib/motion'
 
@@ -1063,7 +1060,7 @@ export function Navbar() {
             initial={{ y: '-100%' }}
             animate={{ y: 0 }}
             exit={{ y: '-100%' }}
-            transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
+            transition={{ duration: 0.35, ease: 'easeOut' }}
             className="fixed inset-0 z-50 flex flex-col bg-yellow"
           >
             <div className="flex items-center justify-between px-4 py-3">
