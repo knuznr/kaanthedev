@@ -34,7 +34,7 @@ export function Navbar() {
             className="hidden sm:inline-flex !py-2 !px-4 !text-xs"
             ariaLabel="Go to contact section"
           >
-            LET&#201;S TALK
+            LETS TALK
           </MagneticButton>
           <button
             type="button"
