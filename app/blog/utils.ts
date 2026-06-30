@@ -6,6 +6,7 @@ type Metadata = {
   publishedAt: string
   summary: string
   image?: string
+  tags?: string[]
 }
 
 function parseFrontmatter(fileContent: string) {
@@ -20,7 +21,12 @@ function parseFrontmatter(fileContent: string) {
     let [key, ...valueArr] = line.split(': ')
     let value = valueArr.join(': ').trim()
     value = value.replace(/^['"](.*)['"]$/, '$1') // Remove quotes
-    metadata[key.trim() as keyof Metadata] = value
+    const keyName = key.trim() as keyof Metadata
+    if (keyName === 'tags') {
+      metadata[keyName] = value.split(',').map((t) => t.trim()).filter(Boolean)
+    } else {
+      metadata[keyName] = value
+    }
   })
 
   return { metadata: metadata as Metadata, content }
@@ -87,4 +93,15 @@ export function formatDate(date: string, includeRelative = false) {
   }
 
   return `${fullDate} (${formattedDate})`
+}
+
+export function getLatestPosts(count: number) {
+  return getBlogPosts().sort((a, b) => {
+    if (new Date(a.metadata.publishedAt) > new Date(b.metadata.publishedAt)) return -1
+    return 1
+  }).slice(0, count)
+}
+
+export function getPost(slug: string) {
+  return getBlogPosts().find((p) => p.slug === slug)
 }

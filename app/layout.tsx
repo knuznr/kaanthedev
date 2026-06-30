@@ -1,75 +1,61 @@
 import './global.css'
 import type { Metadata } from 'next'
-import { JetBrains_Mono } from 'next/font/google'
+import { Syne, Inter, JetBrains_Mono } from 'next/font/google'
 import { Navbar } from './components/nav'
 import { Analytics } from '@vercel/analytics/react'
 import { SpeedInsights } from '@vercel/speed-insights/next'
 import Footer from './components/footer'
+import { MotionProvider } from './components/motion-provider'
 import { baseUrl } from './sitemap'
-import "katex/dist/katex.min.css";
+import 'katex/dist/katex.min.css'
 
-// Configure JetBrains Mono
-const jetbrainsMono = JetBrains_Mono({
+const syne = Syne({ subsets: ['latin'], weight: ['700', '800'], variable: '--font-syne', display: 'swap' })
+const inter = Inter({ subsets: ['latin'], variable: '--font-inter', display: 'swap' })
+const jetbrains = JetBrains_Mono({
   subsets: ['latin'],
-  weight: ['300', '400', '500', '600', '700'],
+  weight: ['400', '500', '600', '700'],
   variable: '--font-jetbrains',
   display: 'swap',
 })
 
 export const metadata: Metadata = {
   metadataBase: new URL(baseUrl),
-  title: {
-    default: "kaanthedev",
-    template: "%s | kaanthedev",
-  },
-  description: 'This is my portfolio.',
+  title: { default: 'kaan uzuner — developer', template: '%s — kaan uzuner' },
+  description: 'Kaan Uzuner — developer building bold things for the web. Web + AI.',
   openGraph: {
-    title: 'My Portfolio',
-    description: 'This is my portfolio.',
+    title: 'kaan uzuner — developer',
+    description: 'Developer building bold things for the web. Web + AI.',
     url: baseUrl,
-    siteName: 'My Portfolio',
-    locale: 'en_EN',
+    siteName: 'kaan uzuner',
+    locale: 'en_US',
     type: 'website',
   },
-  icons: {
-    shortcut: '/favicon.ico',
-  },
+  icons: { shortcut: '/favicon.ico' },
   robots: {
     index: true,
     follow: true,
-    googleBot: {
-      index: true,
-      follow: true,
-      'max-video-preview': -1,
-      'max-image-preview': 'large',
-      'max-snippet': -1,
-    },
+    googleBot: { index: true, follow: true, 'max-image-preview': 'large', 'max-snippet': -1, 'max-video-preview': -1 },
   },
 }
 
 const cx = (...classes: (string | boolean | undefined)[]) => classes.filter(Boolean).join(' ')
 
-export default function RootLayout({
-  children,
-}: {
-  children: React.ReactNode
-}) {
+const themeScript = `(function(){try{var t=localStorage.getItem('theme');var m=window.matchMedia('(prefers-color-scheme: dark)').matches;if(t==='dark'||(!t&&m)){document.documentElement.classList.add('dark')}}catch(e){}})()`
+
+export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html
-      lang="en"
-      className={cx(
-        'text-black bg-white dark:text-white dark:bg-[#181C14]',
-        jetbrainsMono.variable
-      )}
-    >
-      <body className="antialiased max-w-xl mx-4 mt-8 lg:mx-auto">
-        <main className="flex-auto min-w-0 mt-6 flex flex-col px-2 md:px-0">
+    <html lang="en" className={cx(syne.variable, inter.variable, jetbrains.variable)}>
+      <head>
+        <script dangerouslySetInnerHTML={{ __html: themeScript }} />
+      </head>
+      <body className="font-body antialiased">
+        <MotionProvider>
           <Navbar />
-          {children}
+          <main className="flex-auto min-w-0">{children}</main>
           <Footer />
           <Analytics />
           <SpeedInsights />
-        </main>
+        </MotionProvider>
       </body>
     </html>
   )

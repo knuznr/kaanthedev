@@ -1,130 +1,58 @@
-// app/blog/[slug]/page.tsx
+import { notFound } from 'next/navigation'
+import Link from 'next/link'
+import type { Metadata } from 'next'
+import { getBlogPosts, getPost, formatDate } from 'app/blog/utils'
+import { CustomMDX } from 'app/components/mdx'
 
-import type { Metadata } from "next";
-import { notFound } from "next/navigation";
-import { CustomMDX } from "app/components/mdx";
-import { Comments } from "app/components/comments";
-import { formatDate, getBlogPosts } from "app/blog/utils";
-import { baseUrl } from "app/sitemap";
-
-type BlogPageProps = {
-  params: Promise<{
-    slug: string;
-  }>;
-};
-
-export async function generateStaticParams() {
-  const posts = getBlogPosts();
-
-  return posts.map((post) => ({
-    slug: post.slug,
-  }));
+export function generateStaticParams() {
+  return getBlogPosts().map((post) => ({ slug: post.slug }))
 }
 
-export async function generateMetadata({
-  params,
-}: BlogPageProps): Promise<Metadata | undefined> {
-  const { slug } = await params;
-
-  const post = getBlogPosts().find(
-    (post) => post.slug === slug
-  );
-
+export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
+  const { slug } = await params
+  const post = getPost(slug)
   if (!post) {
-    return;
+    return {
+      title: 'Writing',
+      description: 'A post on web development, AI, and building things.',
+    }
   }
-
-  const {
-    title,
-    publishedAt: publishedTime,
-    summary: description,
-    image,
-  } = post.metadata;
-
-  const ogImage =
-    image || `${baseUrl}/og?title=${encodeURIComponent(title)}`;
-
   return {
-    title,
-    description,
-    openGraph: {
-      title,
-      description,
-      type: "article",
-      publishedTime,
-      url: `${baseUrl}/blog/${post.slug}`,
-      images: [
-        {
-          url: ogImage,
-        },
-      ],
-    },
-    twitter: {
-      card: "summary_large_image",
-      title,
-      description,
-      images: [ogImage],
-    },
-  };
+    title: post.metadata.title,
+    description: post.metadata.summary,
+  }
 }
 
-export default async function Blog({
-  params,
-}: BlogPageProps) {
-  const { slug } = await params;
-
-  const post = getBlogPosts().find(
-    (post) => post.slug === slug
-  );
-
-  if (!post) {
-    notFound();
-  }
-
-  const structuredDataImage = post.metadata.image
-    ? `${baseUrl}${post.metadata.image}`
-    : `${baseUrl}/og?title=${encodeURIComponent(
-        post.metadata.title
-      )}`;
+export default async function PostPage({ params }: { params: Promise<{ slug: string }> }) {
+  const { slug } = await params
+  const post = getPost(slug)
+  if (!post) notFound()
 
   return (
-    <section>
-      <script
-        type="application/ld+json"
-        suppressHydrationWarning
-        dangerouslySetInnerHTML={{
-          __html: JSON.stringify({
-            "@context": "https://schema.org",
-            "@type": "BlogPosting",
-            headline: post.metadata.title,
-            datePublished: post.metadata.publishedAt,
-            dateModified: post.metadata.publishedAt,
-            description: post.metadata.summary,
-            image: structuredDataImage,
-            url: `${baseUrl}/blog/${post.slug}`,
-            author: {
-              "@type": "Person",
-              name: "My Portfolio",
-            },
-          }),
-        }}
-      />
-
-      <h1 className="title text-2xl font-semibold tracking-tighter">
-        {post.metadata.title}
-      </h1>
-
-      <div className="mt-2 mb-8 flex items-center justify-between text-sm">
-        <p className="text-sm text-neutral-600 dark:text-neutral-400">
-          {formatDate(post.metadata.publishedAt)}
+    <article className="px-4 pt-32 pb-24 md:px-6">
+      <Link href="/blog" className="font-mono text-xs uppercase tracking-widest opacity-70 hover:opacity-100">
+        &#8592; BACK TO WRITING
+      </Link>
+      <header className="mt-8 border-b-2 border-ink pb-6 mb-10">
+        <p className="font-mono text-xs uppercase tracking-widest opacity-70">
+          {formatDate(post.metadata.publishedAt, false)}
         </p>
-      </div>
-
-      <article className="prose">
+        <h1 className="mt-4 font-display font-extrabold uppercase leading-[0.85] tracking-tight text-[clamp(2.5rem,9vw,6rem)]">
+          {post.metadata.title}
+        </h1>
+        {post.metadata.tags && post.metadata.tags.length > 0 && (
+          <div className="mt-5 flex flex-wrap gap-2">
+            {post.metadata.tags.map((t) => (
+              <span key={t} className="border-2 border-ink bg-yellow px-2 py-0.5 font-mono text-[0.65rem] uppercase tracking-widest">
+                {t}
+              </span>
+            ))}
+          </div>
+        )}
+      </header>
+      <div className="prose max-w-none">
         <CustomMDX source={post.content} />
-      </article>
-
-      <Comments slug={post.slug} />
-    </section>
-  );
+      </div>
+    </article>
+  )
 }
