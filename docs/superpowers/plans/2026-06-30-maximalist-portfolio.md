@@ -1596,14 +1596,14 @@ For each of the three files in `app/blog/posts/`, add a `tags:` line to the fron
 title: "Explanation of 'Time Complexity'"
 publishedAt: "2024-01-01"
 summary: "A primer on time complexity and big-O notation."
-tags: ["algorithms", "fundamentals"]
+tags: "algorithms, fundamentals"
 ---
 ```
 
-Use these tag sets:
-- `building-a-project.mdx` → `tags: ["build", "personal"]`
-- `sorting-algorithms.mdx` → `tags: ["algorithms", "fundamentals"]`
-- `time-complexity.mdx` → `tags: ["algorithms", "fundamentals"]`
+Use these tag sets (comma-separated quoted form, which the Step 1 comma-split parser handles):
+- `building-a-project.mdx` → `tags: "build, personal"`
+- `sorting-algorithms.mdx` → `tags: "algorithms, fundamentals"`
+- `time-complexity.mdx` → `tags: "algorithms, fundamentals"`
 
 (Read each file first; only add the `tags:` line, do not change body content or other frontmatter fields.)
 
