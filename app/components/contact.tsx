@@ -53,7 +53,7 @@ export function Contact() {
     <section id="contact" className="px-4 py-24 md:px-6">
       <SectionHeading index="07" title="Contact" id="contact-heading" />
       <h3 className="font-display font-extrabold uppercase leading-[0.85] tracking-tight text-[clamp(2.5rem,10vw,7rem)] mb-10">
-        LET&#201;S BUILD<br />SOMETHING
+        LETS BUILD<br />SOMETHING
       </h3>
 
       <div className="grid grid-cols-1 gap-8 lg:grid-cols-2">
