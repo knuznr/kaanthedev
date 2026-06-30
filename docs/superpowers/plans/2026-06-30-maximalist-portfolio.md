@@ -1170,11 +1170,21 @@ export function Hero() {
         viewport={viewportOnce}
         className="mt-12 border-y-2 border-ink bg-ink py-2 text-paper"
       >
-        <div className="flex overflow-hidden">
-          {Array.from({ length: 6 }).map((_, i) => (
-            <span key={i} className="font-mono text-xs uppercase tracking-widest whitespace-nowrap px-4">
-              BUILDING BOLD THINGS FOR THE WEB <span className="text-yellow mx-2">&#9632;</span>
-            </span>
+        <div className="group flex overflow-hidden">
+          {[0, 1].map((dup) => (
+            <div
+              key={dup}
+              className="flex shrink-0 items-center animate-marquee group-hover:[animation-play-state:paused]"
+            >
+              {Array.from({ length: 6 }).map((_, i) => (
+                <span
+                  key={i}
+                  className="font-mono text-xs uppercase tracking-widest whitespace-nowrap px-4"
+                >
+                  BUILDING BOLD THINGS FOR THE WEB <span className="text-yellow mx-2">&#9632;</span>
+                </span>
+              ))}
+            </div>
           ))}
         </div>
       </motion.div>
