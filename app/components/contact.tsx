@@ -86,7 +86,7 @@ export function Contact() {
             </div>
           )}
           {status === 'error' && (
-            <div className="border-2 border-ink bg-red p-4 font-mono text-sm uppercase tracking-widest text-paper">
+            <div id="contact-error" className="border-2 border-ink bg-red p-4 font-mono text-sm uppercase tracking-widest text-paper">
               {error || 'ERROR'}
             </div>
           )}
@@ -140,7 +140,7 @@ function Field({
         type={type}
         required
         className="w-full border-2 border-ink bg-paper px-3 py-2 font-body text-ink outline-none focus:bg-yellow transition-colors"
-        aria-describedby={error ? `${name}-error` : undefined}
+        aria-describedby={error ? 'contact-error' : undefined}
       />
     </div>
   )

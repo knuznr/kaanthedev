@@ -5,6 +5,7 @@ import { Navbar } from './components/nav'
 import { Analytics } from '@vercel/analytics/react'
 import { SpeedInsights } from '@vercel/speed-insights/next'
 import Footer from './components/footer'
+import { MotionProvider } from './components/motion-provider'
 import { baseUrl } from './sitemap'
 import 'katex/dist/katex.min.css'
 
@@ -48,11 +49,13 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <script dangerouslySetInnerHTML={{ __html: themeScript }} />
       </head>
       <body className="font-body antialiased">
-        <Navbar />
-        <main className="flex-auto min-w-0">{children}</main>
-        <Footer />
-        <Analytics />
-        <SpeedInsights />
+        <MotionProvider>
+          <Navbar />
+          <main className="flex-auto min-w-0">{children}</main>
+          <Footer />
+          <Analytics />
+          <SpeedInsights />
+        </MotionProvider>
       </body>
     </html>
   )

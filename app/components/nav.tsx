@@ -1,5 +1,5 @@
 'use client'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import Link from 'next/link'
 import { AnimatePresence, motion } from 'framer-motion'
 import { navItems } from 'app/lib/data/profile'
@@ -12,9 +12,18 @@ export function Navbar() {
   const ids = navItems.map((n) => n.id)
   const active = useActiveSection(ids)
 
+  useEffect(() => {
+    if (!open) return
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') setOpen(false)
+    }
+    window.addEventListener('keydown', onKey)
+    return () => window.removeEventListener('keydown', onKey)
+  }, [open])
+
   return (
     <>
-      <header className="fixed inset-x-0 top-0 z-40 flex items-center justify-between px-4 py-3 md:px-6 bg-paper/0">
+      <header className="fixed inset-x-0 top-0 z-40 flex items-center justify-between px-4 py-3 md:px-6">
         <Link href="/" className="font-mono text-sm font-bold uppercase tracking-widest border-2 border-ink bg-paper px-3 py-1">
           KAAN&#8599;
         </Link>

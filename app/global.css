@@ -24,6 +24,10 @@
   --paper: #0A0A0A;
   --ink: #FAFAFA;
   color-scheme: dark;
+  --sh-class: #4c97f8;
+  --sh-identifier: white;
+  --sh-keyword: #f47067;
+  --sh-string: #0fa295;
 }
 
 @utility font-display { font-family: var(--font-display); }
@@ -49,6 +53,15 @@ body {
   letter-spacing: -0.005em;
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
+}
+
+:focus-visible {
+  outline: 3px solid var(--ink);
+  outline-offset: 2px;
+}
+
+section {
+  scroll-margin-top: 6rem;
 }
 
 ::selection {
@@ -95,15 +108,6 @@ table {
   --sh-jsxliterals: #6266d1;
   --sh-property: #e25a1c;
   --sh-entity: #e25a1c;
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --sh-class: #4c97f8;
-    --sh-identifier: white;
-    --sh-keyword: #f47067;
-    --sh-string: #0fa295;
-  }
 }
 
 .prose a {
