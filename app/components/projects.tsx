@@ -8,14 +8,14 @@ import { fadeUp, stagger, viewportOnce } from 'app/lib/motion'
 
 export function Projects() {
   return (
-    <section id="work" className="px-4 py-24 md:px-6">
-      <SectionHeading index="03" title="Selected Work" id="work-heading" />
+    <section id="work" className="px-4 py-16 md:px-6 md:py-20">
+      <SectionHeading title="Selected Work" id="work-heading" />
       <motion.div
         variants={stagger}
         initial="hidden"
         whileInView="show"
         viewport={viewportOnce}
-        className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3"
+        className="grid grid-cols-1 gap-6 md:grid-cols-2"
       >
         {projects.map((project) => {
           const href = project.liveUrl ?? project.repoUrl ?? '#contact'
@@ -24,7 +24,7 @@ export function Projects() {
             <motion.div
               key={project.id}
               variants={fadeUp}
-              className={project.featured ? 'sm:col-span-2 lg:col-span-2 lg:row-span-2' : ''}
+              className="min-w-0"
             >
               <Link
                 href={href}
@@ -34,7 +34,7 @@ export function Projects() {
               >
                 <div className="relative">
                   <div className="absolute -bottom-3 -right-3 hidden h-full w-full border-2 border-ink bg-paper group-hover:bg-yellow transition-colors sm:block" />
-                  <div className="relative transition-transform duration-300 group-hover:-translate-x-1 group-hover:-translate-y-1">
+                  <div className="relative transition-transform duration-200 group-hover:-translate-x-1 group-hover:-translate-y-1">
                     <Poster project={project} />
                   </div>
                 </div>

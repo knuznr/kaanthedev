@@ -3,6 +3,7 @@ import Link from 'next/link'
 import type { Metadata } from 'next'
 import { getBlogPosts, getPost, formatDate } from 'app/blog/utils'
 import { CustomMDX } from 'app/components/mdx'
+import { getOgImage } from 'app/og/metadata'
 
 export function generateStaticParams() {
   return getBlogPosts().map((post) => ({ slug: post.slug }))
@@ -17,9 +18,23 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
       description: 'A post on web development, AI, and building things.',
     }
   }
+  const image = getOgImage(post.metadata.title)
+
   return {
     title: post.metadata.title,
     description: post.metadata.summary,
+    openGraph: {
+      title: post.metadata.title,
+      description: post.metadata.summary,
+      type: 'article',
+      images: [image],
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title: post.metadata.title,
+      description: post.metadata.summary,
+      images: [image.url],
+    },
   }
 }
 

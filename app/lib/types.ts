@@ -11,7 +11,6 @@ export type Project = {
   liveUrl?: string
   repoUrl?: string
   accent: Accent
-  featured?: boolean
 }
 
 export type Quote = {
@@ -36,11 +35,5 @@ export type Social = {
 
 export type NavItem = {
   id: string
-  index: string
-  label: string
-}
-
-export type Stat = {
-  value: string
   label: string
 }

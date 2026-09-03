@@ -1,18 +1,22 @@
 'use client'
-import { motion } from 'framer-motion'
+import { useRef } from 'react'
+import { motion, useInView } from 'framer-motion'
 import { profile } from 'app/lib/data/profile'
 import { MagneticButton } from './magnetic-button'
 import { fadeUp, stagger, wipeIn, viewportOnce } from 'app/lib/motion'
 
 export function Hero() {
+  const marqueeRef = useRef<HTMLDivElement>(null)
+  const marqueeInView = useInView(marqueeRef, { amount: 0.1 })
+
   return (
-    <section id="hero" className="relative flex min-h-screen flex-col justify-center px-4 pt-24 pb-16 md:px-6">
+    <section id="hero" className="relative flex min-h-[85dvh] flex-col justify-center px-4 pb-12 pt-24 md:px-6">
       <motion.div variants={stagger} initial="hidden" animate="show" className="relative">
         <motion.p variants={fadeUp} className="font-mono text-xs uppercase tracking-widest opacity-70 mb-6">
           {profile.status} &#183; {profile.location}
         </motion.p>
 
-        <motion.h1 variants={fadeUp} className="font-display font-extrabold uppercase leading-[0.82] tracking-tight text-[clamp(3rem,14vw,11rem)]">
+        <motion.h1 variants={fadeUp} className="font-display text-[clamp(2.75rem,8vw,6rem)] font-extrabold uppercase leading-[0.88] tracking-tight">
           <span className="block">KAAN</span>
           <span className="block">
             <span className="relative inline-block">
@@ -25,7 +29,7 @@ export function Hero() {
         <div className="mt-6 flex flex-wrap items-end justify-between gap-6">
           <motion.div variants={fadeUp} className="max-w-xl text-lg leading-relaxed">
             <span className="font-mono text-sm uppercase tracking-widest">// </span>
-            {profile.role} building bold things for the web.{' '}
+            {profile.role} building focused software for real work.{' '}
             <span className="inline-block rotate-[-3deg] border-2 border-ink bg-red px-2 font-mono text-sm uppercase tracking-widest text-paper">
               {profile.tagline}
             </span>
@@ -44,12 +48,13 @@ export function Hero() {
         initial="hidden"
         whileInView="show"
         viewport={viewportOnce}
-        className="mt-12 border-y-2 border-ink bg-ink py-2 text-paper"
+        className="mt-10 border-y-2 border-ink bg-ink py-2 text-paper"
       >
-        <div className="group flex overflow-hidden">
+        <div ref={marqueeRef} className="group flex overflow-hidden">
           {[0, 1].map((dup) => (
             <div
               key={dup}
+              style={{ animationPlayState: marqueeInView ? 'running' : 'paused' }}
               className="flex shrink-0 items-center animate-marquee group-hover:[animation-play-state:paused]"
             >
               {Array.from({ length: 6 }).map((_, i) => (
@@ -57,7 +62,7 @@ export function Hero() {
                   key={i}
                   className="font-mono text-xs uppercase tracking-widest whitespace-nowrap px-4"
                 >
-                  BUILDING BOLD THINGS FOR THE WEB <span className="text-yellow mx-2">&#9632;</span>
+                  FOCUSED SOFTWARE FOR REAL WORK <span className="mx-2 text-yellow">&#9632;</span>
                 </span>
               ))}
             </div>
@@ -65,9 +70,6 @@ export function Hero() {
         </div>
       </motion.div>
 
-      <div className="mt-10 flex justify-center">
-        <span className="font-mono text-[0.7rem] uppercase tracking-widest opacity-60">scroll &#8595;</span>
-      </div>
     </section>
   )
 }

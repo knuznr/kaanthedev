@@ -1,22 +1,39 @@
-import { ImageResponse } from 'next/og'
+import { createOgRenderer, fontsourceFonts } from '@xsynaptic/og-image-generator'
+import { ogImageSize } from './metadata'
+import { OgTemplate } from './template'
 
-export function GET(request: Request) {
-  let url = new URL(request.url)
-  let title = url.searchParams.get('title') || "kaan's portfolio"
+export const runtime = 'nodejs'
 
-  return new ImageResponse(
-    (
-      <div tw="flex flex-col w-full h-full items-center justify-center bg-white">
-        <div tw="flex flex-col md:flex-row w-full py-12 px-4 md:items-center justify-between p-8">
-          <h2 tw="flex flex-col text-4xl font-bold tracking-tight text-left">
-            {title}
-          </h2>
-        </div>
-      </div>
-    ),
+const renderer = fontsourceFonts(
+  [
     {
-      width: 1200,
-      height: 630,
-    }
-  )
+      name: 'Syne',
+      package: 'syne',
+      variants: [
+        { style: 'normal', subset: 'latin', weight: 700 },
+        { style: 'normal', subset: 'latin', weight: 800 },
+      ],
+    },
+  ],
+  { resolveFrom: import.meta.url },
+).then((fonts) =>
+  createOgRenderer({
+    ...ogImageSize,
+    fonts,
+    format: 'png',
+  }),
+)
+
+export async function GET(request: Request) {
+  const url = new URL(request.url)
+  const title = url.searchParams.get('title')?.trim().slice(0, 96) || 'Kaan Uzuner — Founder & Developer'
+  const render = await renderer
+  const image = await render(<OgTemplate title={title} />)
+
+  return new Response(new Uint8Array(image), {
+    headers: {
+      'Cache-Control': 'public, max-age=0, s-maxage=86400, stale-while-revalidate=604800',
+      'Content-Type': 'image/png',
+    },
+  })
 }

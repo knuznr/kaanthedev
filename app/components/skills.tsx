@@ -11,9 +11,9 @@ const accentBg: Record<Accent, string> = {
 
 export function Skills() {
   return (
-    <section id="skills" className="py-24">
+    <section id="skills" className="py-16 md:py-20">
       <div className="px-4 md:px-6">
-        <SectionHeading index="04" title="Toolbox" id="skills-heading" />
+        <SectionHeading title="Toolbox" id="skills-heading" />
       </div>
 
       <div className="flex flex-col gap-2 border-y-2 border-ink py-2">
@@ -30,7 +30,7 @@ export function Skills() {
             <ul className="p-4 space-y-2 font-mono text-sm">
               {cat.items.map((item) => (
                 <li key={item} className="flex items-center gap-2 hover:text-red transition-colors">
-                  <span className="h-2 w-2 bg-ink" />
+                  <span className="size-2 bg-ink" />
                   {item}
                 </li>
               ))}
