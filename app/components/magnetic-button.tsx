@@ -1,6 +1,7 @@
 'use client'
 import { useRef } from 'react'
 import { motion, useMotionValue, useSpring } from 'framer-motion'
+import { cn } from 'app/lib/cn'
 
 type Props = {
   children: React.ReactNode
@@ -29,7 +30,10 @@ export function MagneticButton({ children, href, onClick, className = '', ariaLa
     y.set(0)
   }
 
-  const cls = `inline-flex items-center justify-center font-mono uppercase tracking-widest text-sm border-2 border-ink bg-ink text-paper px-6 py-3 transition-colors hover:bg-yellow hover:text-ink ${className}`
+  const cls = cn(
+    'inline-flex min-h-11 items-center justify-center border-2 border-ink bg-ink px-6 py-3 font-mono text-sm uppercase tracking-widest text-paper transition-colors duration-200 hover:bg-yellow hover:text-ink',
+    className,
+  )
 
   if (href) {
     return (

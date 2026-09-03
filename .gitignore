@@ -6,6 +6,7 @@
 .pnp.js
 
 
+
 # testing
 /coverage
 
@@ -20,6 +21,11 @@
 .DS_Store
 *.pem
 .vscode
+.agents
+.impeccable
+.superpowers
+AGENTS.md
+CLAUDE.md
 
 # debug
 npm-debug.log*

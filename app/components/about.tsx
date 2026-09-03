@@ -1,13 +1,13 @@
 'use client'
 import { motion } from 'framer-motion'
-import { profile, stats } from 'app/lib/data/profile'
+import { profile } from 'app/lib/data/profile'
 import { SectionHeading } from './section-heading'
 import { fadeUp, stagger, viewportOnce } from 'app/lib/motion'
 
 export function About() {
   return (
-    <section id="about" className="px-4 py-24 md:px-6">
-      <SectionHeading index="02" title="About" id="about-heading" />
+    <section id="about" className="px-4 py-16 md:px-6 md:py-20">
+      <SectionHeading title="About" id="about-heading" />
       <motion.div
         variants={stagger}
         initial="hidden"
@@ -19,14 +19,6 @@ export function About() {
           <div className="space-y-5 text-lg leading-relaxed">
             {profile.bio.map((p, i) => (
               <p key={i}>{p}</p>
-            ))}
-          </div>
-          <div className="mt-10 grid grid-cols-3 gap-3">
-            {stats.map((s) => (
-              <div key={s.label} className="border-2 border-ink p-4">
-                <div className="font-display text-[clamp(1.5rem,5vw,3rem)] font-extrabold leading-none">{s.value}</div>
-                <div className="mt-2 font-mono text-[0.65rem] uppercase tracking-widest opacity-70">{s.label}</div>
-              </div>
             ))}
           </div>
         </motion.div>

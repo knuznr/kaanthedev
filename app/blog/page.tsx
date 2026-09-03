@@ -16,7 +16,7 @@ export default function BlogPage() {
   return (
     <section className="px-4 pt-32 pb-24 md:px-6">
       <div className="border-b-2 border-ink pb-4 mb-10">
-        <h1 className="font-display font-extrabold uppercase leading-[0.85] tracking-tight text-[clamp(2.5rem,10vw,8rem)]">
+        <h1 className="font-display text-[clamp(2.5rem,8vw,6rem)] font-extrabold uppercase leading-[0.9] tracking-tight">
           WRITING
         </h1>
       </div>

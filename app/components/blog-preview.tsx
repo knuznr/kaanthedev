@@ -8,8 +8,8 @@ const bar = ['bg-yellow', 'bg-red', 'bg-blue']
 export function BlogPreview() {
   const posts = getLatestPosts(3)
   return (
-    <section id="writing" className="px-4 py-24 md:px-6">
-      <SectionHeading index="06" title="Writing" id="writing-heading" />
+    <section id="writing" className="px-4 py-16 md:px-6 md:py-20">
+      <SectionHeading title="Writing" id="writing-heading" />
       <div className="grid grid-cols-1 gap-6 sm:grid-cols-3">
         {posts.map((post, i) => (
           <Link

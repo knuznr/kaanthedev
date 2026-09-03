@@ -1,3 +1,8 @@
+'use client'
+import { useRef } from 'react'
+import { useInView } from 'framer-motion'
+import { cn } from 'app/lib/cn'
+
 export function Marquee({
   items,
   reverse = false,
@@ -7,12 +12,17 @@ export function Marquee({
   reverse?: boolean
   className?: string
 }) {
+  const ref = useRef<HTMLDivElement>(null)
+  const isInView = useInView(ref, { amount: 0.1 })
+
   const row = (key: string) => (
     <div
       key={key}
-      className={`flex shrink-0 items-center gap-6 pr-6 animate-marquee ${
-        reverse ? '[animation-direction:reverse]' : ''
-      } group-hover:[animation-play-state:paused]`}
+      style={{ animationPlayState: isInView ? 'running' : 'paused' }}
+      className={cn(
+        'flex shrink-0 animate-marquee items-center gap-6 pr-6 group-hover:[animation-play-state:paused]',
+        reverse && '[animation-direction:reverse]',
+      )}
     >
       {items.map((it, i) => (
         <span
@@ -20,13 +30,13 @@ export function Marquee({
           className="font-display font-extrabold uppercase text-[clamp(1.5rem,4vw,3rem)] leading-none whitespace-nowrap"
         >
           {it}
-          <span className="inline-block mx-6 h-3 w-3 bg-red align-middle" />
+          <span className="mx-6 inline-block size-3 bg-red align-middle" />
         </span>
       ))}
     </div>
   )
   return (
-    <div className={`group flex overflow-hidden ${className}`} aria-hidden="true">
+    <div ref={ref} className={cn('group flex overflow-hidden', className)} aria-hidden="true">
       {row('a')}
       {row('b')}
     </div>

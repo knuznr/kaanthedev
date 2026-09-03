@@ -6,6 +6,7 @@ import { Analytics } from '@vercel/analytics/react'
 import { SpeedInsights } from '@vercel/speed-insights/next'
 import Footer from './components/footer'
 import { MotionProvider } from './components/motion-provider'
+import { getOgImage } from './og/metadata'
 import { baseUrl } from './sitemap'
 import 'katex/dist/katex.min.css'
 
@@ -18,17 +19,28 @@ const jetbrains = JetBrains_Mono({
   display: 'swap',
 })
 
+const defaultTitle = 'kaan uzuner — founder & developer'
+const defaultDescription = 'Founder and developer of Kolay Büro, a legal operations platform for law firms.'
+const defaultOgImage = getOgImage('Kaan Uzuner — Founder & Developer')
+
 export const metadata: Metadata = {
   metadataBase: new URL(baseUrl),
-  title: { default: 'kaan uzuner — developer', template: '%s — kaan uzuner' },
-  description: 'Kaan Uzuner — developer building bold things for the web. Web + AI.',
+  title: { default: defaultTitle, template: '%s — kaan uzuner' },
+  description: 'Kaan Uzuner — founder and developer of Kolay Büro.',
   openGraph: {
-    title: 'kaan uzuner — developer',
-    description: 'Developer building bold things for the web. Web + AI.',
+    title: defaultTitle,
+    description: defaultDescription,
     url: baseUrl,
     siteName: 'kaan uzuner',
     locale: 'en_US',
     type: 'website',
+    images: [defaultOgImage],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: defaultTitle,
+    description: defaultDescription,
+    images: [defaultOgImage.url],
   },
   icons: { shortcut: '/favicon.ico' },
   robots: {
@@ -44,14 +56,18 @@ const themeScript = `(function(){try{var t=localStorage.getItem('theme');var m=w
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en" className={cx(syne.variable, inter.variable, jetbrains.variable)}>
+    <html
+      lang="en"
+      className={cx(syne.variable, inter.variable, jetbrains.variable)}
+      suppressHydrationWarning
+    >
       <head>
         <script dangerouslySetInnerHTML={{ __html: themeScript }} />
       </head>
       <body className="font-body antialiased">
         <MotionProvider>
           <Navbar />
-          <main className="flex-auto min-w-0">{children}</main>
+          <main className="min-w-0 flex-auto">{children}</main>
           <Footer />
           <Analytics />
           <SpeedInsights />

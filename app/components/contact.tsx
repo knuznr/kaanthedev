@@ -50,10 +50,10 @@ export function Contact() {
   }
 
   return (
-    <section id="contact" className="px-4 py-24 md:px-6">
-      <SectionHeading index="07" title="Contact" id="contact-heading" />
-      <h3 className="font-display font-extrabold uppercase leading-[0.85] tracking-tight text-[clamp(2.5rem,10vw,7rem)] mb-10">
-        LETS BUILD<br />SOMETHING
+    <section id="contact" className="px-4 py-16 md:px-6 md:py-20">
+      <SectionHeading title="Contact" id="contact-heading" />
+      <h3 className="mb-10 font-display text-[clamp(2rem,8.5vw,7rem)] font-extrabold uppercase leading-[0.85] tracking-tight">
+        LET&apos;S BUILD<br />SOMETHING
       </h3>
 
       <div className="grid grid-cols-1 gap-8 lg:grid-cols-2">

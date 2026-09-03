@@ -8,7 +8,7 @@ const accentBg: Record<Accent, string> = {
 
 export function Poster({ project }: { project: Project }) {
   return (
-    <div className="relative aspect-[4/5] w-full border-2 border-ink overflow-hidden bg-paper">
+    <div className="relative aspect-[16/10] w-full overflow-hidden border-2 border-ink bg-paper">
       <div
         className={`absolute inset-0 ${accentBg[project.accent]}`}
         style={{ clipPath: 'polygon(0 0, 68% 0, 38% 100%, 0 100%)' }}

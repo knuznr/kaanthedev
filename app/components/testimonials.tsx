@@ -13,8 +13,8 @@ const accentText: Record<Accent, string> = {
 
 export function Testimonials() {
   return (
-    <section id="words" className="px-4 py-24 md:px-6">
-      <SectionHeading index="05" title="Kind Words" id="words-heading" />
+    <section id="words" className="px-4 py-16 md:px-6 md:py-20">
+      <SectionHeading title="Kind Words" id="words-heading" />
       <div className="flex flex-col gap-6">
         {testimonials.map((t, i) => (
           <motion.figure
