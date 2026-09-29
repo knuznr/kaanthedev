@@ -1,0 +1,62 @@
+---
+title: 'Devlog 06: Superadmin powers, AI summaries, and a reviewer that caught a bad idea'
+publishedAt: '2026-07-31'
+summary: 'End of July: a control panel for me, an AI chat with a quota system, and my first taste of implementer plus reviewer agents.'
+tags: 'devlog, kolay-buro'
+---
+
+The last week of July was one of the busiest stretches of the whole project. Most of it grew out of one question on 28 July: what does the superadmin side still need?
+
+## The superadmin panel
+
+Superadmin is the panel only I use, to run all the offices. The requirement fit in one sentence: **I must be able to step into any tenant function from the superadmin side**, and dangerous actions like disabling or deleting a tenant need careful flows.
+
+The plan lived in an HTML file, easier to read than a wall of chat. After I approved it, the commits started to pour in:
+
+- a resumable tenant purge worker, a delete that can pick up where it stopped if it dies halfway
+- consoles for tenant users, roles, integrations, files and legal data
+- field-level corrections to legal records, so one field can be fixed without touching the rest
+- "ticket-bound" inspection: records can only be looked at when a ticket says why
+
+That last one is the idea I like most from the week. Access to legal data should always come with a reason attached.
+
+## The AI features
+
+Next: an AI chat inside the product, connected through OpenRouter, with a legal language model (HukukBERT) running as its own Docker service. Cost came up right away, and with it the constraint that shaped the rest: AI usage will be limited by plan, so something has to enforce the limit.
+
+That turned "add AI" into three pieces:
+
+1. A chat page, built with shadcn's message components.
+2. Quota rules per plan, with atomic counting so two requests at once can't both squeeze through.
+3. AI case summaries on the case overview page, based on the office's own documents.
+
+## Implementer plus reviewer
+
+The case summaries were built with a workflow I hadn't tried before. A written plan and design spec, split into numbered tasks. For each task, one agent implemented it and a separate agent reviewed it, first against the requirements and then for quality. If the reviewer found problems, another pass fixed them and it was reviewed again.
+
+The reviews found real things:
+
+- The embedding batch size was set in config, but the code ignored it and hard-coded a number.
+- Records queued for deletion could still be included as sources.
+- The important one, in the hardest task (a worker that claims jobs safely): the worker **held an open database transaction while waiting on the embedding and OpenRouter calls.** The reviewer marked it Critical. A slow network call can keep a transaction open for seconds, and enough of those will choke the database. It was fixed and re-reviewed.
+
+I wouldn't have caught that one. I hadn't even heard of the problem. It's the best argument I have for a second pair of eyes, even when the eyes belong to another model.
+
+The full test suite still had older failures unrelated to AI, a missing storage-limit middleware and two stale frontend tests. The agent refused to merge or push while they were red, which was the right call. Fixing them came first, and only then did everything go into main.
+
+## A big UI pass, on main
+
+On 29 and 31 July, in Cursor, a master UI/UX refactor went straight onto `main` with no new branches. That's a risky way to work, and I'd think twice next time. It covered:
+
+- a floating sidebar with auto, pinned and collapsed modes
+- a dashboard rebuilt around one question: what do I need to look at today, and what can I do from here?
+- table row selection that no longer depends on the delete permission (selecting is a table feature, deleting is a separate permission)
+- the court-hearings calendar rebuilt as a real month grid instead of a table
+
+The sidebar was going to hurt me in August.
+
+## What I took from this
+
+- A separate reviewer beats the same model checking its own work.
+- Access to sensitive data should always come with a reason attached.
+- Never keep a database transaction open while waiting on the network.

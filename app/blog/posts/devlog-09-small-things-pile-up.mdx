@@ -1,0 +1,50 @@
+---
+title: 'Devlog 09: Late August, the small things that pile up'
+publishedAt: '2026-09-02'
+summary: 'Maintenance mode, favorites in the sidebar, a search box that should understand "ISG", a court notification inbox, and documents for people who are not me.'
+tags: 'devlog, kolay-buro'
+---
+
+Between the big projects there are a lot of smaller ones. Late August was mostly those. None of them is glamorous, and together they're most of what makes a product feel finished.
+
+## Control panels that didn't control anything
+
+On 26 August, some of the superadmin "controlled intervention" screens looked bad and, when tried, did nothing. The retention settings had the same problem: they existed, but they didn't run. The fix used two skills together: Ponytail (do the simplest thing that works) and Superpowers (plan first).
+
+Related, on 22 August: a **maintenance mode.** When it's on, every active session is dropped, and users see a fixed maintenance notice plus a message I can type. The text is editable, and the existing structure had to stay.
+
+## A favorites list, and a sidebar that ran out of room
+
+Favorites let users pin the tabs they use most. A good idea, but by 27 August the sidebar was getting worse: a star on hover is fine, but pages with sub-menus no longer fit. Every feature added to the sidebar takes space from something else.
+
+Two more small ones from that week:
+
+- The search bar at the top should be smarter. Type "ISG" and it should find cases and enforcement files that start with ISG.
+- The "Filter" panel on tables had become always open, taking space. It went back to closed until needed.
+
+## The court notification inbox
+
+28 August: UETS, the electronic notification system that lawyers receive official documents through. It works per office. A public help page from another product that already does it was the reference: build the same thing. Each office enters its own details, and incoming notices land in a separate inbox in Kolay Büro. Notices are matched on their notification number, so a repeat doesn't create a duplicate.
+
+The module sits behind a flag. In the same spirit, the e-SMM invoicing module stays in the code but is off by default, because we may enable it later.
+
+## Naming trips me up
+
+On 2 September I was in the middle of a spec when I realized I'd been mixing up two features with similar names. It was "templates", not "contracts". If two features have names that sound alike, rename one.
+
+A rule I also settled on: write specs in English, so the repo stays consistent.
+
+## Storage numbers that said "NaN B"
+
+The storage quota screen showed "NaN B" in places, which usually means dividing by nothing. It made me ask a bigger question: what counts as "used space"? The answer has to include everything that lands in an office: uploaded files, data from transfers, data from the UYAP extension, data from the notification inbox.
+
+## Writing for people who aren't me
+
+The last piece of the week was documentation: a detailed article for on-prem covering how to deploy it and how the data transfer works. Writing it exposed a question I hadn't answered. The repo is private, so where does a customer's server *get* the code? It came back in September.
+
+## What I took from this
+
+- Small features cost space. Sidebars, toolbars and headers are finite.
+- Names matter.
+- A feature that exists but doesn't run is worse than a missing one.
+- Write for a stranger. Documents force you to finish the thinking.

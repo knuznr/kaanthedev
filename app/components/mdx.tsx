@@ -51,6 +51,12 @@ function CustomLink(props) {
   return <a target="_blank" rel="noopener noreferrer" {...props} />;
 }
 
+function imageFileName(src) {
+  const raw = typeof src === 'string' ? src : src && src.src;
+  const name = String(raw || '').split(/[?#]/, 1)[0].split('/').pop();
+  return name || 'image';
+}
+
 function RoundedImage(props) {
   const { alt, src, className, ...rest } = props;
 
@@ -58,19 +64,21 @@ function RoundedImage(props) {
     return null;
   }
 
+  const text = typeof alt === 'string' && alt.trim() ? alt : imageFileName(src);
+
   return (
     <Image
       {...rest}
       src={src}
-      alt={alt || ''}
-      className={['rounded-lg', className].filter(Boolean).join(' ')}
+      alt={text}
+      className={['border border-ink/20', className].filter(Boolean).join(' ')}
     />
   );
 }
 
 function Callout(props) {
   return (
-    <div className="px-4 py-3 border-2 border-ink bg-yellow text-ink text-sm flex items-center mb-8">
+    <div className="px-4 py-3 border border-ink/20 bg-ink/5 text-sm flex items-center mb-8">
       <div className="flex items-center w-4 mr-4">{props.emoji}</div>
       <div className="w-full callout">{props.children}</div>
     </div>
@@ -79,7 +87,7 @@ function Callout(props) {
 
 function ProsCard({ title, pros }) {
   return (
-    <div className="border-2 border-ink bg-paper p-6 my-4 w-full">
+    <div className="border border-ink/20 bg-paper p-6 my-4 w-full">
       <span>{`You might use ${title} if...`}</span>
       <div className="mt-4">
         {pros.map((pro) => (
@@ -95,7 +103,7 @@ function ProsCard({ title, pros }) {
 
 function ConsCard({ title, cons }) {
   return (
-    <div className="border-2 border-ink bg-paper p-6 my-6 w-full">
+    <div className="border border-ink/20 bg-paper p-6 my-6 w-full">
       <span>{`You might not use ${title} if...`}</span>
       <div className="mt-4">
         {cons.map((con) => (
@@ -126,10 +134,11 @@ function slugify(str) {
 }
 
 function createHeading(level) {
+  const tag = level === 1 ? 'h2' : `h${level}`;
   return ({ children }) => {
     let slug = slugify(children);
     return React.createElement(
-      `h${level}`,
+      tag,
       { id: slug },
       [
         React.createElement('a', {

@@ -1,0 +1,54 @@
+---
+title: 'Devlog 10: September, the UI overhaul that took three tries'
+publishedAt: '2026-09-25'
+summary: 'Skills that score a design, goals that run on their own, a design lab, and three tools in two weeks.'
+tags: 'devlog, kolay-buro'
+---
+
+By September the product worked, and it looked like it had been built by six different people. In a way it had: many AI sessions over many months, each with its own idea of what a card looks like.
+
+## Try one: 12 September
+
+The plan started with an honest verdict: the UI was in a very bad state. Two problems were easy to see. Cards that used to have a border had lost it. And empty states were wrong: with no contracts, the "nothing here" box floated in the middle of the screen, and other cards showed edges where they shouldn't.
+
+A font experiment came and went in minutes. Geist Mono looked silly and the normal font came back. Fast reversals are fine. That's what cheap experiments are for.
+
+Then a long overhaul plan, drawn from real designs, MCP servers and skills, with a proper task list. And a new feature to me: **goals.** In Codex, you set a goal and the tool keeps nudging the AI to continue on its own. The logs show dozens of automatic "keep working toward the goal" notices in a row with nobody around. That's what I wanted, and also a bit scary. Two things helped: saying what to skip (UYAP and the field module), and saying when to stop.
+
+## Try two: 15 September
+
+I moved to another tool (Muse) and picked up the same plan, mostly done by then. The handoff worked only because the plan lived in a file, not in a chat.
+
+A UI-skills MCP server joined the project, after a "disabled" error at first. Then the design skills gave the project a score, and it was low. Uncomfortable, and useful. The other big realization was an old one from June: every component is shared, so a fix can spread across all 88 pages at once. That's the whole reason to build shared components.
+
+## Try three: the design lab
+
+18 September: a separate workspace to design in, so experiments couldn't break the main app. I liked the isolation and disliked the result. The lab had drifted away from the real product: pretty, but a fictional app.
+
+The correction was to keep the isolation and use the real components, with HeroUI and Kumo UI as inputs, plus a separate page listing every screen so I could see them without logging in.
+
+The rule I took: **design in isolation, but with real components.** Otherwise you're comparing a mockup with a product.
+
+## Then Claude, and tidying
+
+On 24 September, in Claude Code, the first job was the tools themselves: some of the skills I'd installed with `npx` hadn't come across. Then:
+
+- The migration tool only understood Microsoft SQL Server, so MySQL and PostgreSQL adapters were next.
+- A dirty branch got sorted into commits before anything new started.
+- The design got re-scored, and the site moved onto a handful of shared components: selects and dates first, then headings and cards.
+- One idea that grew on me: turn the case-tracking page into something closer to Evernote. Notes on a case feel good to a user. The 25 September commit is called `case-file margin notes on paper`.
+
+## The end of the week
+
+On 25 September CI moved onto a Playwright image, since the tests had been slow and hard on my laptop. A 20-phase plan started with phase 0. And on-prem got a decision: Tailscale shouldn't be required. The `install.sh` commit at the end of the day hands the office over to a `/kurulum` (setup) page.
+
+Then I stopped, because I was tired. The AI wasn't. That's worth remembering.
+
+## What I took from this
+
+- Put the plan in a file. Every tool handoff worked because of it.
+- Let the AI run on a goal, but decide in advance what it skips and when it stops.
+- A design lab should use the real components.
+- Being tired is a valid reason to stop.
+
+That's the story up to now. Kolay Büro keeps growing, and I'll keep writing.

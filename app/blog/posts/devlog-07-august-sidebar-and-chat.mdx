@@ -1,0 +1,53 @@
+---
+title: 'Devlog 07: August begins, a sidebar I broke three times'
+publishedAt: '2026-08-06'
+summary: 'The first week of August: a sidebar that fought back, encrypted chat, a CI that hurt, and rules the AI now has to remember.'
+tags: 'devlog, kolay-buro'
+---
+
+If July was building, the first week of August was **poking at what I'd built and finding out it was weaker than I thought.**
+
+## Learning to attack my own app
+
+I spent a lot of that week using the product like someone who wants to break it: logging in and out in two tabs, restarting the server while a browser stayed open, reading what the app stores on the user's machine. I found things that needed fixing, and I'm not going to list them here. What I want to write down is the habit. "Is this a weak spot?" is a question you can ask about your own code at any time, for free, and the answers are very often yes.
+
+I also got curious about basic behavior I had never looked at, like what exactly the inactivity timer does and how long it waits when a tab isn't in focus.
+
+## Encrypted chat
+
+Users needed a chat with each other. Because it lives inside a legal product, messages are encrypted, and I had the database's own security level reviewed at the same time. The result: encrypted messages, with real-time events sent out to everyone in a conversation.
+
+A week later came a bug that every chat has: the sender got a "new message" pop-up for their own message, twice. It needed a proper WebSocket connection and a check for who the message is from.
+
+## The sidebar
+
+On 3 August, the sidebar fought me. When it collapsed, the main content stayed at the old width. The sidebar itself was one or two pixels wider than it should be. The separators between buttons leaned to the right.
+
+Each fix made something else worse: content jumped too far left, then items started overlapping each other. In the end, what fixed it wasn't a smarter attempt. It was going back to the original shadcn sidebar, keeping the button positions, and rebuilding from that known good state.
+
+When something you just fixed gets worse, don't stack fixes on a broken fix. Go back to something that worked.
+
+## The CI that hurt
+
+A few pushes in a row failed in CI, for the kind of reasons that make you feel silly: lint errors, a type error from a missing export. Wasting CI runs costs real time (and, on some plans, real quota). So on 6 August a rule went into the AI's memory: **never commit or push without running the CI lint checks first.** It's my most-repeated rule now.
+
+## Things that broke this week
+
+- Deleting a user and then creating one with the same name failed with "transaction commit failed". Something was left behind in the schema.
+- File previews and "open in new tab" stopped working for uploaded and shared files.
+- Emails sent after registration came from an address that nobody could find in the code. Part of the email setup lived outside the repo.
+- For the first time ever, the CD pipeline failed with an odd Docker config error.
+
+## New things that week
+
+- **Form drafts.** If the connection drops while a case is being saved, what you typed is kept in the browser, on every create modal.
+- **Client share links.** A lawyer can share chosen files with a client without giving them access to the system. There's a PIN, and the sharer chooses between sharing by record or by manual selection, and between download options.
+- **On-prem setup.** A setup wizard, and a login page that already knows the office's name, because an on-prem install only ever has one office.
+
+From this week on, the working rule became: no changes without tests first, and planning before building.
+
+## What I took from this
+
+- Test your own login and logout in two tabs, then again on a phone.
+- If a fix makes things worse, go back.
+- Repeated pain belongs in the AI's memory as a rule.

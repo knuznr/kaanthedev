@@ -1,0 +1,51 @@
+---
+title: 'Devlog 08: The migration agent, where rehearsals lie'
+publishedAt: '2026-09-01'
+summary: 'August: building a tool that moves a law office from its old database into Kolay Büro, and learning that a rehearsal passing means less than I hoped.'
+tags: 'devlog, kolay-buro'
+---
+
+The hardest part of this project isn't the app. It's **moving an office's old data into it.** A law office with ten years of cases in an old system isn't going to retype them. If I can't move their data, they can't move to me.
+
+Much of August went to a tool I called the migration agent.
+
+## The idea
+
+The old system runs on Microsoft SQL Server, on the office's own machine, and my servers can't just connect to it. So the plan was a small program the customer runs on their own machine. It reads the old data, pairs with my server using a one-time code, and sends the data over in batches.
+
+The first commits, around 6 August, are full of unglamorous pieces: device verification, a mapping client, a run command, and a deterministic key for every record. That last one is the smart bit. A record with the same key can't be created twice, so sending the same thing again shouldn't produce duplicates.
+
+## Steps added over the month
+
+1. **Mapping.** Old column names don't match mine. The tool suggests a mapping and a person confirms it.
+2. **Dry run.** Pretend to import and report what would happen.
+3. **Documents.** The files attached to cases have to come across too, so there's an inventory and an isolated step that ingests them.
+4. **Report.** After a run, say what happened, table by table.
+
+The bugs in this phase were mostly small and educational: an endpoint returning 404, a request that was simply wrong (422), a verify step complaining that a field was already mapped to another row. Some of my own fields, like the library ones, weren't offered as targets at all, which meant extra tables for whatever the target couldn't hold.
+
+## Running it on a real Windows Server
+
+13 August brought a boring question: where does the `.exe` come out? A customer runs it on their server. Then the pipeline stopped because it needed a code-signing certificate, which I didn't have and didn't want to pay for. A simple command-line program was enough, so the build shipped unsigned. When the program opened and closed in a flash, I wondered if that was normal. I believe it was: double-click a command-line program and Windows shows a window for a moment and closes it. It has to be run from a terminal.
+
+## Where it started lying
+
+14 August: the transfer ran and every count came back zero. Then an error saying the idempotency key had already been used with different content. The safety feature I liked so much, that the same key can't create duplicates, was protecting me from myself. My guess: my re-runs changed the contents but reused the key.
+
+We started over with a fresh pairing. Then I found out the **users table wasn't picked up at all.** In a system where every case has an owner, that's one of the most important tables.
+
+Some more discoveries over the next days:
+
+- Enforcement files (icra) come in two kinds, for and against the client, and my model showed them as one.
+- Two lists in the old system, "work tracking" and "case distribution", had the same structure. I didn't want both in the new one.
+- A missing `https://` in a command-line flag gave `unsupported protocol scheme ""`. It took embarrassingly long to see.
+
+And the one that really bothered me. Rehearsals succeeded and the real transfer got stuck on a lock. By 31 August the rehearsal passed and the real run still blew up, and I needed detailed logs. Around then the source server itself went down, and I wondered whether our command had done it. The database was complaining about snapshot isolation, which is a way of saying it couldn't guarantee a stable read while other people were writing.
+
+## What I took from this
+
+- **A dry run tests your code. It doesn't test the customer's data.** Real data has surprises a rehearsal never asks about.
+- Idempotency is powerful, and also the reason your second attempt can silently do nothing.
+- Never trust "all tables imported" without asking which tables weren't on the list.
+- Be exact about destructive steps. A cleanup of an office's data before a fresh try also removed its users. A list of what to delete, and nothing else, is worth writing out.
+- By 1 September the migration side had been rewritten again, and it still wasn't stable. The story continues.

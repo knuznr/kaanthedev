@@ -7,12 +7,20 @@ export const runtime = 'nodejs'
 const renderer = fontsourceFonts(
   [
     {
-      name: 'Syne',
-      package: 'syne',
-      variants: [
-        { style: 'normal', subset: 'latin', weight: 700 },
-        { style: 'normal', subset: 'latin', weight: 800 },
-      ],
+      name: 'Inter',
+      package: 'inter',
+      variants: [{ style: 'normal' as const, subset: 'latin', weight: 800 }],
+    },
+    {
+      // Turkish letters (Ş, İ, Ğ) live in latin-ext; template falls back to this family
+      name: 'Inter Ext',
+      package: 'inter',
+      variants: [{ style: 'normal' as const, subset: 'latin-ext', weight: 800 }],
+    },
+    {
+      name: 'JetBrains Mono',
+      package: 'jetbrains-mono',
+      variants: [{ style: 'normal' as const, subset: 'latin', weight: 500 }],
     },
   ],
   { resolveFrom: import.meta.url },
@@ -24,11 +32,15 @@ const renderer = fontsourceFonts(
   }),
 )
 
+const param = (url: URL, key: string, max: number) => url.searchParams.get(key)?.trim().slice(0, max) || undefined
+
 export async function GET(request: Request) {
   const url = new URL(request.url)
-  const title = url.searchParams.get('title')?.trim().slice(0, 96) || 'Kaan Uzuner — Founder & Developer'
+  const title = param(url, 'title', 96) ?? 'Kaan Uzuner'
+  const kind = param(url, 'kind', 24)
+  const date = param(url, 'date', 24)
   const render = await renderer
-  const image = await render(<OgTemplate title={title} />)
+  const image = await render(<OgTemplate title={title} kind={kind} date={date} />)
 
   return new Response(new Uint8Array(image), {
     headers: {

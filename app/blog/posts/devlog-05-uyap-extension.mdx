@@ -1,0 +1,54 @@
+---
+title: 'Devlog 05: A test tenant, a rulebook for the AI, and the UYAP extension'
+publishedAt: '2026-07-16'
+summary: 'Mid July: writing an AGENTS.md so Codex behaves, and building a Chrome extension that talks to a court system.'
+tags: 'devlog, kolay-buro'
+---
+
+The middle of July went partly to something that sounds boring and turned out to matter a lot: making the AI predictable.
+
+## A test office for a real person
+
+13 July: someone was going to try the product, so I set up a proper test environment in their name. Every area filled with believable fake data, email already verified, onboarding done, and a made-up email address so no verification code goes anywhere by mistake.
+
+One decision I still think was right. The UYAP integration (more below) didn't fully work yet, so that area got a mockup showing how it will work, not fake data. Don't fake a feature. Fake the *picture* of a feature, and say so.
+
+## A rulebook, started on 14 July
+
+I spent a session getting Codex to help me write rules for itself, in a file called `AGENTS.md` at the root of the repo. Every AI coding tool reads a file like this. It's the closest thing to a manager.
+
+The rules that ended up in it:
+
+- SaaS and on-prem are built from the same main branch. No permanent branch per customer.
+- Tenant data always goes through the request's scoped database, never a global one.
+- A hidden button in the frontend is not security. Check permissions in the backend too.
+- Feature flag, plan entitlement, user permission and quota are four different things. Don't use one in place of another.
+- Never commit secrets or log real legal data.
+- Don't push, merge or deploy without an explicit go-ahead.
+
+I also noticed that my environment had a skill framework (Superpowers) active, and the first plan didn't fit it. So the plan got revised before anything was implemented. Read the plan before you let it run.
+
+## The UYAP extension
+
+UYAP is the courts' system in Turkey, and lawyers live in it. The idea from April became real on 15 July: a Chrome extension that reads case data while the lawyer works in UYAP and sends it, securely, to Kolay Büro's own service. A design skill (emil-design-eng) helped make the extension's page look decent too.
+
+One long day of debugging followed:
+
+- Pairing between the extension and the server failed with a 403.
+- A `DELETE` on a device returned 404. The fix was to make revoking a device idempotent: doing it twice is fine, not an error.
+- The web page got a live connection (WebSocket), so connected devices appear as they connect.
+- Browser errors I'd never seen: `Could not establish connection. Receiving end does not exist.` and a memory-leak warning about too many event listeners.
+
+A good habit from that day: after the AI says it's done, ask what else it left undone. It gives real answers.
+
+## Small stuff that week
+
+- A drawer for contract details, opened by clicking the row.
+- A pivot-style report: which lawyer has how many cases, active and inactive.
+- Leftover English like "Invalid credentials" translated to Turkish, plus accessibility fixes.
+
+## What I took from this
+
+- A rulebook file saves you from repeating yourself. Write it after the third repeat.
+- "Idempotent" means safe to do twice. It's the answer to a lot of 404s.
+- When a hard part isn't ready, fake the picture, not the feature.

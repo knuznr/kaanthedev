@@ -32,15 +32,4 @@ export const projects: Project[] = [
     role: 'Software Developer',
     accent: 'red',
   },
-  {
-    id: 'portfolio',
-    index: '04/04',
-    name: 'This Site',
-    description: 'A maximalist portfolio built with Next.js, Tailwind, and Framer Motion. Solid colors, oversized type, CSS posters, zero image bytes.',
-    stack: ['Next.js', 'React', 'Tailwind', 'Framer Motion'],
-    year: '2026',
-    role: 'Designer + Engineer',
-    accent: 'blue',
-    repoUrl: 'https://github.com/knnuznr/kaanthedev',
-  },
 ]

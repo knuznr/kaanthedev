@@ -1,0 +1,44 @@
+---
+title: 'Devlog 04: July, the first real deploy'
+publishedAt: '2026-07-04'
+summary: 'A new server, certificates, DNS, a mail service that would not send, and an error message that kept coming back.'
+tags: 'devlog, kolay-buro'
+---
+
+3 July was the day the project left my laptop for a real server. I learned how many things have to be true at once for a website to open.
+
+## Planning before deploying
+
+The morning started with planning, not code: the modernization split into phases, the ones that could run in parallel first, the easy ones last.
+
+## The server day
+
+A fresh x86 server with Docker already on it still needs a lot. Deploy host and port go into GitHub secrets, with an SSH key that the pipeline can use. Then the certificate: it doesn't appear by itself. It needs certbot and a DNS record at my domain provider.
+
+I lost patience once, because I had changed the DNS records and the AI kept telling me to check. It had a reason: the address it saw still started with the old server's numbers. DNS takes time to spread, and no amount of typing at an AI speeds it up.
+
+Something I hadn't thought about: **the certificate has to cover every subdomain**, not just the app. `admin.…`, `test.…`, and each office.
+
+## Then nobody could log in
+
+The server was up and the site opened, but a fresh server has no tenants, so there was no office to log into. The superadmin panel returned a 404 at first. So I set up a test tenant with fake data.
+
+The next morning the superadmin login returned 401 in a loop, and mail returned 403. This message showed up:
+
+`Cannot determine tenant. Use subdomain (tenant.kolayburo.com) or X-Tenant header.`
+
+It told me exactly what was wrong, and it was still showing up a month later.
+
+## The small fires
+
+- The Resend email API returned an error. Pasting the full request into the chat was the fastest way to understand it.
+- CI failed on `staticcheck` because of a function nobody used.
+- An office was stuck waiting for a confirmation email that wouldn't arrive, so I had the waiting offices approved directly on the server.
+- The app-tour box had a transparent background on production, and got an urgent fix.
+- A person evaluating the app needed demo data, and I made it by distorting a chunk of local data.
+
+## What I took from this
+
+- A first deploy is mostly a list of small assumptions: DNS, certificates, environment variables, tenant data.
+- Keep the messages your app gives you. They're usually right.
+- Real customer data doesn't belong in a demo, even distorted. A seeding script is safer, and that's what I'd do next time.
