@@ -36,5 +36,10 @@
   "devDependencies": {
     "@types/katex": "^0.16.8"
   },
-  "license": "MIT"
+  "license": "MIT",
+  "pnpm": {
+    "overrides": {
+      "fflate": "0.7.5"
+    }
+  }
 }
