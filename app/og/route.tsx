@@ -1,36 +1,25 @@
-import { createOgRenderer, fontsourceFonts } from '@xsynaptic/og-image-generator'
+import { readFileSync } from 'node:fs'
+import path from 'node:path'
+import { createOgRenderer } from '@xsynaptic/og-image-generator'
 import { ogImageSize } from './metadata'
 import { OgTemplate } from './template'
 
 export const runtime = 'nodejs'
 
-const renderer = fontsourceFonts(
-  [
-    {
-      name: 'Inter',
-      package: 'inter',
-      variants: [{ style: 'normal' as const, subset: 'latin', weight: 800 }],
-    },
-    {
-      // Turkish letters (Ş, İ, Ğ) live in latin-ext; template falls back to this family
-      name: 'Inter Ext',
-      package: 'inter',
-      variants: [{ style: 'normal' as const, subset: 'latin-ext', weight: 800 }],
-    },
-    {
-      name: 'JetBrains Mono',
-      package: 'jetbrains-mono',
-      variants: [{ style: 'normal' as const, subset: 'latin', weight: 500 }],
-    },
+// Fonts live in the repo (app/og/fonts, listed in outputFileTracingIncludes in next.config.js) so the
+// serverless bundle always contains them. Reading them out of node_modules at runtime is not traced.
+const font = (file: string) => readFileSync(path.join(process.cwd(), 'app/og/fonts', file))
+
+const renderer = createOgRenderer({
+  ...ogImageSize,
+  fonts: [
+    { name: 'Inter', data: font('inter-latin-800-normal.woff'), weight: 800, style: 'normal' },
+    // Turkish letters (Ş, İ, Ğ) live in latin-ext; the template falls back to this family
+    { name: 'Inter Ext', data: font('inter-latin-ext-800-normal.woff'), weight: 800, style: 'normal' },
+    { name: 'JetBrains Mono', data: font('jetbrains-mono-latin-500-normal.woff'), weight: 500, style: 'normal' },
   ],
-  { resolveFrom: import.meta.url },
-).then((fonts) =>
-  createOgRenderer({
-    ...ogImageSize,
-    fonts,
-    format: 'png',
-  }),
-)
+  format: 'png',
+})
 
 const param = (url: URL, key: string, max: number) => url.searchParams.get(key)?.trim().slice(0, max) || undefined
 
@@ -39,8 +28,7 @@ export async function GET(request: Request) {
   const title = param(url, 'title', 96) ?? 'Kaan Uzuner'
   const kind = param(url, 'kind', 24)
   const date = param(url, 'date', 24)
-  const render = await renderer
-  const image = await render(<OgTemplate title={title} kind={kind} date={date} />)
+  const image = await renderer(<OgTemplate title={title} kind={kind} date={date} />)
 
   return new Response(new Uint8Array(image), {
     headers: {
