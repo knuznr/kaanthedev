@@ -1,0 +1,37 @@
+---
+title: 'Devlog 02: April, teaching an AI what "consistent" means'
+publishedAt: '2026-05-02'
+summary: 'My first Codex sessions. Audits, one design logic for every page, and a feature that lets users add their own fields.'
+tags: 'devlog, kolay-buro'
+---
+
+The chat logs start on 24 April, with Codex open on this project. The first job was an audit of the whole product against the marketing site. That site promised things, and I wanted the product to actually have them.
+
+## Every page looked like a different app
+
+The biggest thing I felt in April was that pages didn't look related. Different title styles, different spacing, and two dashboards on one index page. So the work became consistency: page titles in the header instead of a big heading on each page, one merged dashboard, a sidebar that scrolls properly and has its collapse button in a sensible place.
+
+The best small thing that month was a rule saved in the AI's memory: **when a feature is added and a similar one already exists somewhere else, apply the change there too.** Without a rule like that, one page gets fixed and its twin stays broken.
+
+## Fields that users can add themselves
+
+Law offices don't all track the same things. So I built dynamic columns: an extra JSON field on cases and other records, where an office adds its own fields without anyone changing the database.
+
+It went in stages. First the fields lived inside each page's own form. Then one central admin page managed them, and the old per-page pieces were removed. Then the bugs, which taught me how the app was wired:
+
+- Fields added on the admin page didn't show up in the modal for creating a case.
+- In some selects, the text in the dropdown list didn't match the text shown after choosing. Text that looks the same can come from two places in the code.
+
+## Other things in April
+
+- 5 April: global search, using Postgres trigram indexes.
+- 9 April: a bot check on register (Cloudflare Turnstile) plus an invite code.
+- 13 April: the UI moved from DaisyUI to shadcn.
+- 16 April: feature flags, so the same code can run as SaaS or on-prem, plus table filters with drag-and-drop grouping.
+- Late April: planning for the UYAP integration (the Turkish courts' system), as a browser extension that sends compressed JSON instead of writing straight into case records.
+
+## What I learned
+
+1. Turn every repeated complaint into a written rule.
+2. Read the plan before code gets written.
+3. Pages that look alike are a feature. It took me a month to notice it was missing.

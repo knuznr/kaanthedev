@@ -1,4 +1,5 @@
 @import 'tailwindcss';
+@import 'tw-animate-css';
 
 @custom-variant dark (&:where(.dark, .dark *));
 
@@ -9,20 +10,58 @@
   --color-red: #FF3B2F;
   --color-blue: #2B2DFF;
   --color-green: #00C896;
+  --color-manila: var(--manila);
+  --color-kraft: var(--kraft);
+  --color-stamp: var(--stamp);
+  --color-case: var(--case);
+  --color-team-a: var(--team-a);
+  --color-team-b: var(--team-b);
+  --color-rookie: var(--rookie);
+  --color-signal: var(--signal);
+  /* shadcn tokens mapped onto the site palette */
+  --color-background: var(--paper);
+  --color-foreground: var(--ink);
+  --color-primary: var(--ink);
+  --color-primary-foreground: var(--paper);
+  --color-secondary: color-mix(in srgb, var(--ink) 6%, var(--paper));
+  --color-secondary-foreground: var(--ink);
+  --color-accent: color-mix(in srgb, var(--ink) 8%, var(--paper));
+  --color-accent-foreground: var(--ink);
+  --color-muted-foreground: var(--muted);
+  --color-border: color-mix(in srgb, var(--ink) 15%, transparent);
+  --color-input: color-mix(in srgb, var(--ink) 25%, transparent);
+  --color-ring: var(--ink);
+  --color-destructive: #dc2626;
 }
 
 :root {
-  --paper: #FAFAFA;
-  --ink: #0A0A0A;
-  --font-display: var(--font-syne), system-ui, sans-serif;
+  --paper: #F1EFEA;
+  --ink: #111111;
+  --signal: #E5391F;
+  --manila: #F3EDDF;
+  --kraft: #211D16;
+  --stamp: #C62F26;
+  --case: #2B2DFF;
+  --team-a: #1E4FD8;
+  --team-b: #C62F26;
+  --rookie: #E8B400;
+  --muted-light: #6F6C65;
+  --muted-dark: #A19E96;
+  --muted: var(--muted-light);
+  --font-display: var(--font-inter), system-ui, sans-serif;
   --font-body: var(--font-inter), system-ui, sans-serif;
   --font-mono: var(--font-jetbrains), ui-monospace, 'SF Mono', Monaco, monospace;
   color-scheme: light;
 }
 
 .dark {
-  --paper: #0A0A0A;
-  --ink: #FAFAFA;
+  --paper: #0E0E0D;
+  --ink: #EDEBE6;
+  --manila: #211D16;
+  --team-a: #1E4FD8;
+  --team-b: #C62F26;
+  --rookie: #E8B400;
+  --muted: var(--muted-dark);
   color-scheme: dark;
   --sh-class: #4c97f8;
   --sh-identifier: white;
@@ -33,16 +72,14 @@
 @utility font-display { font-family: var(--font-display); }
 @utility font-body { font-family: var(--font-body); }
 @utility font-mono { font-family: var(--font-mono); }
-@utility animate-marquee { animation: marquee 32s linear infinite; }
 
-@keyframes marquee {
-  from { transform: translateX(0); }
-  to { transform: translateX(-50%); }
-}
+.on-yellow { color: #0A0A0A !important; }
+.muted { color: var(--muted); }
+.link-muted { color: var(--muted); transition: color 150ms cubic-bezier(0.4, 0, 0.2, 1); }
+@media (hover: hover) { .link-muted:hover { color: var(--ink); } }
 
 html {
   -webkit-text-size-adjust: 100%;
-  min-width: 360px;
 }
 
 body {
@@ -56,7 +93,7 @@ body {
 }
 
 :focus-visible {
-  outline: 3px solid var(--ink);
+  outline: 2px solid var(--ink);
   outline-offset: 2px;
 }
 
@@ -65,17 +102,23 @@ section {
 }
 
 ::selection {
-  background: #F5FF00;
-  color: #0A0A0A;
+  background: var(--ink);
+  color: var(--paper);
 }
+
+input, textarea { caret-color: var(--ink); }
 
 h1, h2, h3, h4, h5, h6 {
   font-family: var(--font-display);
-  font-weight: 800;
-  letter-spacing: -0.02em;
-  line-height: 0.9;
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  line-height: 1.15;
   text-wrap: balance;
 }
+
+/* swiss display: heavy grotesk, tight tracking, one red full stop (see <Title>) */
+.title { font-family: var(--font-display); font-weight: 800; letter-spacing: -0.045em; line-height: 0.95; }
+.mono-label { font-family: var(--font-mono); font-weight: 500; font-size: 0.75rem; letter-spacing: 0.14em; text-transform: uppercase; }
 
 p, blockquote {
   text-wrap: pretty;
@@ -122,7 +165,7 @@ table {
 .prose pre {
   background: var(--paper);
   color: var(--ink);
-  border: 2px solid var(--ink);
+  border: 1px solid color-mix(in srgb, var(--ink) 20%, transparent);
   border-radius: 0;
   overflow-x: auto;
   padding: 0.5rem 0.75rem;
@@ -151,7 +194,7 @@ table {
 .prose img { margin: 0; }
 .prose blockquote {
   font-family: var(--font-body);
-  border-left: 4px solid var(--ink);
+  border-left: 2px solid color-mix(in srgb, var(--ink) 30%, transparent);
   padding-left: 1rem;
   margin: 1rem 0;
 }
@@ -176,10 +219,84 @@ table {
 pre::-webkit-scrollbar { display: none; }
 pre { -ms-overflow-style: none; scrollbar-width: none; }
 
+/* motion: transform/opacity only, <=400ms, strong ease-out */
+:root { --ease-out: cubic-bezier(0.23, 1, 0.32, 1); }
+
+@keyframes rise {
+  from { opacity: 0; transform: translateY(8px); filter: blur(4px); }
+}
+
+/* text shimmer: one highlight sweep left to right over muted text */
+.shimmer {
+  background: linear-gradient(100deg, var(--muted) 40%, var(--ink) 50%, var(--muted) 60%) 100% 0 / 250% 100%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  animation: shimmer 1400ms cubic-bezier(0.4, 0, 0.2, 1) 300ms both;
+}
+@keyframes shimmer { to { background-position: 0 0; } }
+
+@media (prefers-reduced-transparency: reduce) {
+  .send-scrim { background: var(--paper); backdrop-filter: none !important; }
+}
+
+@media (prefers-reduced-transparency: reduce) {
+  .tab-bar { background: var(--paper); backdrop-filter: none; }
+}
+
+/* opening sequence: overlay only exists while html.intro is set */
+.intro-overlay { display: none; }
+html.intro { overflow: hidden; }
+html.intro .intro-overlay { display: flex; }
+.intro-overlay { transition: transform 600ms cubic-bezier(0.77, 0, 0.175, 1); }
+.intro-overlay[data-exit="true"] { transform: translateY(-100%); }
+html.intro [data-stagger] > * { animation-play-state: paused; }
+@keyframes greet-in { from { opacity: 0; transform: translateY(6px); } }
+.greet-in { animation: greet-in 300ms var(--ease-out) both; }
+
+/* load stagger (intro block) */
+[data-stagger] > * { animation: rise 400ms var(--ease-out) both; }
+[data-stagger] > :nth-child(2) { animation-delay: 60ms; }
+[data-stagger] > :nth-child(3) { animation-delay: 120ms; }
+[data-stagger] > :nth-child(4) { animation-delay: 180ms; }
+[data-stagger] > :nth-child(5) { animation-delay: 240ms; }
+
+a, button { transition: color 150ms cubic-bezier(0.4, 0, 0.2, 1), opacity 150ms cubic-bezier(0.4, 0, 0.2, 1), text-decoration-color 150ms cubic-bezier(0.4, 0, 0.2, 1), background-color 150ms cubic-bezier(0.4, 0, 0.2, 1), border-color 150ms cubic-bezier(0.4, 0, 0.2, 1); }
+
+/* smooth light/dark swap */
+body { transition: background-color 200ms ease, color 200ms ease; }
+
 @media (prefers-reduced-motion: reduce) {
-  *, *::before, *::after {
-    animation-duration: 0.001ms !important;
-    animation-iteration-count: 1 !important;
-    transition-duration: 0.001ms !important;
-  }
+  [data-stagger] > * { animation-name: fade; }
+  @keyframes fade { from { opacity: 0; } }
+  body { transition: none; }
+}
+
+/* ---- view transitions (page changes) ---------------------------------------------------------
+   siblings: old leaves fast, new rises in after it; hierarchy: slide, forward = left. */
+::view-transition { pointer-events: none; }
+/* the root layer (header, curtain, backdrop) must switch instantly: the default cross-dissolve made the curtain see-through */
+::view-transition-old(root) { display: none; }
+::view-transition-new(root) { animation: none; }
+/* the curtain sits above the fading pages: named groups paint over root, so it gets its own, on top */
+::view-transition-group(curtain) { animation: none; z-index: 9999; }
+::view-transition-old(curtain) { display: none; }
+::view-transition-new(curtain) { animation: none; }
+
+::view-transition-old(.page) { animation: 120ms cubic-bezier(0.4, 0, 1, 1) both vt-out; }
+::view-transition-new(.page) { animation: 240ms cubic-bezier(0.23, 1, 0.32, 1) 110ms both vt-in; }
+@keyframes vt-out { to { opacity: 0; filter: blur(3px); } }
+@keyframes vt-in { from { opacity: 0; filter: blur(3px); transform: translateY(8px); } }
+
+::view-transition-old(.nav-forward) { --slide: -40px; animation: 140ms cubic-bezier(0.4, 0, 1, 1) both vt-out, 360ms cubic-bezier(0.4, 0, 0.2, 1) both vt-slide reverse; }
+::view-transition-new(.nav-forward) { --slide: 40px; animation: 240ms cubic-bezier(0.23, 1, 0.32, 1) 130ms both vt-fade, 360ms cubic-bezier(0.4, 0, 0.2, 1) both vt-slide; }
+::view-transition-old(.nav-back) { --slide: 40px; animation: 140ms cubic-bezier(0.4, 0, 1, 1) both vt-out, 360ms cubic-bezier(0.4, 0, 0.2, 1) both vt-slide reverse; }
+::view-transition-new(.nav-back) { --slide: -40px; animation: 240ms cubic-bezier(0.23, 1, 0.32, 1) 130ms both vt-fade, 360ms cubic-bezier(0.4, 0, 0.2, 1) both vt-slide; }
+@keyframes vt-fade { from { opacity: 0; } }
+@keyframes vt-slide { from { translate: var(--slide); } }
+
+/* reduced motion: keep the fade, drop every movement and blur */
+@media (prefers-reduced-motion: reduce) {
+  ::view-transition-old(.page), ::view-transition-old(.nav-forward), ::view-transition-old(.nav-back) { animation: 100ms linear both vt-fade reverse; }
+  ::view-transition-new(.page), ::view-transition-new(.nav-forward), ::view-transition-new(.nav-back) { animation: 160ms linear 100ms both vt-fade; }
 }

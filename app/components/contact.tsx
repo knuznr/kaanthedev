@@ -1,147 +1,137 @@
 'use client'
 import { useState } from 'react'
-import { profile } from 'app/lib/data/profile'
-import { SectionHeading } from './section-heading'
+import { AnimatePresence, motion, useReducedMotion } from 'framer-motion'
+import { SendAnimation, type Origin, type SendStage } from 'app/components/send-animation'
+import { Button } from 'app/components/ui/button'
+import { Input } from 'app/components/ui/input'
+import { Label } from 'app/components/ui/label'
+import { Textarea } from 'app/components/ui/textarea'
+import { siteHost } from 'app/lib/site'
 
-type Status = 'idle' | 'pending' | 'success' | 'error'
+// enter slower (ease-out 250ms), exit snappy (120ms)
+const fade = {
+  initial: { opacity: 0, transform: 'translateY(4px)' },
+  animate: { opacity: 1, transform: 'translateY(0px)', transition: { duration: 0.25, ease: [0.23, 1, 0.32, 1] as const } },
+  exit: { opacity: 0, transition: { duration: 0.12 } },
+}
+
+
+// public by design (Web3Forms access keys are meant to ship in the page); set it in .env.local
+const ACCESS_KEY = process.env.NEXT_PUBLIC_WEB3FORMS_KEY
+const PACK_MS = 1700
+const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms))
 
 export function Contact() {
-  const [status, setStatus] = useState<Status>('idle')
+  const reduce = useReducedMotion()
+  const [status, setStatus] = useState<'idle' | 'pending' | 'success' | 'error'>('idle')
+  const [stage, setStage] = useState<SendStage>('idle')
+  const [origin, setOrigin] = useState<Origin>({ x: 0, y: 0 })
   const [error, setError] = useState('')
-  const [copied, setCopied] = useState(false)
 
   async function onSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault()
     const form = e.currentTarget
     const data = new FormData(form)
-    const payload = {
-      name: String(data.get('name') ?? ''),
-      email: String(data.get('email') ?? ''),
-      message: String(data.get('message') ?? ''),
-    }
-    setStatus('pending')
+    const name = String(data.get('name') ?? '').trim()
+    const email = String(data.get('email') ?? '').trim()
+    const message = String(data.get('message') ?? '').trim()
     setError('')
+
+    // validate before anything animates
+    const invalid = !name || !email || !message
+      ? 'All fields are required.'
+      : !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)
+        ? 'Please enter a valid email.'
+        : message.length < 10
+          ? 'Message is too short.'
+          : !ACCESS_KEY
+            ? 'The form is not configured yet. Please email me instead.'
+            : ''
+    if (invalid) {
+      setStatus('error')
+      setError(invalid)
+      return
+    }
+
+    setStatus('pending')
+    if (!reduce) {
+      // the envelope grows out of the send button: offset from the viewport center
+      const b = form.querySelector('button[type="submit"]')?.getBoundingClientRect()
+      if (b) setOrigin({ x: b.x + b.width / 2 - window.innerWidth / 2, y: b.y + b.height / 2 - window.innerHeight / 2 })
+      setStage('pack')
+    }
+    const t0 = performance.now()
     try {
-      const res = await fetch('/api/contact', {
+      // straight from the browser: Web3Forms' free plan does not allow server-side calls,
+      // and the access key is meant to be public
+      const res = await fetch('https://api.web3forms.com/submit', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(payload),
+        headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+        body: JSON.stringify({
+          access_key: ACCESS_KEY,
+          subject: `New message from ${name} (${siteHost})`,
+          from_name: siteHost,
+          name,
+          email,
+          message,
+          botcheck: data.get('botcheck') ? true : '',
+        }),
       })
       const json = await res.json()
-      if (json.ok) {
-        setStatus('success')
+      if (json.success) {
         form.reset()
+        if (reduce) return setStatus('success')
+        // let the envelope finish closing, then the plane leaves (onFlown sets success)
+        await sleep(Math.max(0, PACK_MS - (performance.now() - t0)))
+        setStage('fly')
       } else {
+        setStage('idle')
         setStatus('error')
-        setError(json.error ?? 'Something went wrong.')
+        setError(json.message ?? 'Something went wrong.')
       }
     } catch {
+      setStage('idle')
       setStatus('error')
-      setError('Network error. Try the email link below.')
+      setError('Network error. Try email instead.')
     }
   }
 
-  async function copyEmail() {
-    try {
-      await navigator.clipboard.writeText(profile.email)
-      setCopied(true)
-      setTimeout(() => setCopied(false), 1500)
-    } catch {}
-  }
-
   return (
-    <section id="contact" className="px-4 py-16 md:px-6 md:py-20">
-      <SectionHeading title="Contact" id="contact-heading" />
-      <h3 className="mb-10 font-display text-[clamp(2rem,8.5vw,7rem)] font-extrabold uppercase leading-[0.85] tracking-tight">
-        LET&apos;S BUILD<br />SOMETHING
-      </h3>
-
-      <div className="grid grid-cols-1 gap-8 lg:grid-cols-2">
-        <form onSubmit={onSubmit} noValidate className="border-2 border-ink bg-blue p-6 space-y-6">
-          <Field label="Name" name="name" type="text" error={error} />
-          <Field label="Email" name="email" type="email" error={error} />
-          <div>
-            <label htmlFor="message" className="block font-mono text-xs uppercase tracking-widest mb-2 text-paper">
-              Message
-            </label>
-            <textarea
-              id="message"
-              name="message"
-              required
-              minLength={10}
-              rows={5}
-              className="w-full resize-none border-2 border-ink bg-paper px-3 py-2 font-body text-ink outline-none focus:bg-yellow transition-colors"
-            />
-          </div>
-          <button
-            type="submit"
-            disabled={status === 'pending'}
-            className="w-full border-2 border-ink bg-ink px-6 py-3 font-mono text-sm uppercase tracking-widest text-paper hover:bg-paper hover:text-ink transition-colors disabled:opacity-60"
-          >
-            {status === 'pending' ? 'SENDING\u2026' : 'SEND MESSAGE \u2192'}
-          </button>
-          {status === 'success' && (
-            <div className="border-2 border-ink bg-green p-4 font-mono text-sm uppercase tracking-widest text-ink">
-              &#10003; MESSAGE SENT
-            </div>
-          )}
-          {status === 'error' && (
-            <div id="contact-error" className="border-2 border-ink bg-red p-4 font-mono text-sm uppercase tracking-widest text-paper">
-              {error || 'ERROR'}
-            </div>
-          )}
-        </form>
-
-        <div className="flex flex-col justify-between border-2 border-ink bg-paper p-6">
-          <div>
-            <p className="font-mono text-xs uppercase tracking-widest opacity-60 mb-4">// or reach me directly</p>
-            <button
-              type="button"
-              onClick={copyEmail}
-              className="group block break-all text-left font-display text-[clamp(1.5rem,5vw,3rem)] font-extrabold leading-none hover:text-red transition-colors"
-            >
-              {profile.email}
-            </button>
-            <p className="mt-3 font-mono text-xs uppercase tracking-widest opacity-70">
-              {copied ? 'COPIED &#10003;' : 'click to copy'}
-            </p>
-          </div>
-          <a
-            href={`mailto:${profile.email}`}
-            className="mt-8 inline-flex w-fit border-2 border-ink bg-ink px-5 py-3 font-mono text-sm uppercase tracking-widest text-paper hover:bg-yellow hover:text-ink transition-colors"
-          >
-            OPEN MAIL CLIENT &#8594;
-          </a>
-        </div>
+    <form onSubmit={onSubmit} noValidate className="mt-6 space-y-4">
+      <div className="space-y-2">
+        <Label htmlFor="name" className="muted">name</Label>
+        <Input id="name" name="name" type="text" autoComplete="name" required aria-invalid={status === 'error'} />
       </div>
-    </section>
-  )
-}
-
-function Field({
-  label,
-  name,
-  type,
-  error,
-}: {
-  label: string
-  name: string
-  type: 'text' | 'email'
-  error?: string
-}) {
-  return (
-    <div>
-      <label htmlFor={name} className="block font-mono text-xs uppercase tracking-widest mb-2 text-paper">
-        {label}
-      </label>
-      <input
-        id={name}
-        name={name}
-        type={type}
-        required
-        className="w-full border-2 border-ink bg-paper px-3 py-2 font-body text-ink outline-none focus:bg-yellow transition-colors"
-        aria-describedby={error ? 'contact-error' : undefined}
+      <div className="space-y-2">
+        <Label htmlFor="email" className="muted">email</Label>
+        <Input id="email" name="email" type="email" autoComplete="email" required aria-invalid={status === 'error'} />
+      </div>
+      <div className="space-y-2">
+        <Label htmlFor="message" className="muted">message</Label>
+        <Textarea id="message" name="message" required minLength={10} rows={5} className="resize-none" aria-invalid={status === 'error'} />
+      </div>
+      <input type="checkbox" name="botcheck" tabIndex={-1} autoComplete="off" aria-hidden="true" className="hidden" />
+      <p className="muted text-xs">Messages are delivered by Web3Forms.</p>
+      <Button type="submit" size="lg" disabled={status === 'pending'}>
+        {status === 'pending' ? 'sending…' : 'send'}
+      </Button>
+      <SendAnimation
+        stage={stage}
+        origin={origin}
+        onFlown={() => {
+          setStage('idle')
+          setStatus('success')
+          navigator.vibrate?.(12) // same moment as the visual: the message has left
+        }}
       />
-    </div>
+      <AnimatePresence mode="wait" initial={false}>
+        {status === 'success' && (
+          <motion.p key="ok" role="status" {...fade}>sent. thanks.</motion.p>
+        )}
+        {status === 'error' && (
+          <motion.p key="err" role="alert" {...fade}>{error}</motion.p>
+        )}
+      </AnimatePresence>
+    </form>
   )
 }

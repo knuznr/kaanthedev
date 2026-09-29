@@ -1,17 +1,8 @@
-import { Socials } from './socials'
-
 export default function Footer() {
   return (
-    <footer className="border-t-2 border-ink px-4 py-12 md:px-6">
-      <div className="mb-10">
-        <Socials />
-      </div>
-      <div className="flex flex-col items-start justify-between gap-4 font-mono text-xs uppercase tracking-widest sm:flex-row sm:items-center">
-        <p>&#169; {new Date().getFullYear()} KAAN UZUNER</p>
-        <p className="opacity-70">BUILT WITH NEXT.JS</p>
-        <a href="#hero" className="border-2 border-ink bg-paper px-4 py-2 hover:bg-yellow transition-colors">
-          BACK TO TOP &#8593;
-        </a>
+    <footer className="mx-auto w-full max-w-2xl px-6 pb-[calc(6.5rem+env(safe-area-inset-bottom))] pt-4 md:pb-12">
+      <div className="mono-label muted flex justify-between border-t-[3px] border-ink pt-4">
+        <span>&#169; {new Date().getFullYear()} kaan uzuner</span>
       </div>
     </footer>
   )

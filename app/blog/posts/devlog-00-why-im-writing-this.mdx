@@ -1,0 +1,46 @@
+---
+title: 'Devlog 00: Why I am writing this down'
+publishedAt: '2026-09-29'
+summary: 'Seven months of building Kolay Büro with AI, and I barely remember any of it. So I went digging through my own chat logs.'
+tags: 'devlog, kolay-buro'
+---
+
+I build Kolay Büro, a legal operations platform for law firms in Turkey. Cases, clients, documents, finance, deadlines, all in one place. It started as a repo called OMS on 25 February 2026 and, as I write this, it has 755 commits.
+
+The strange part is that I don't remember most of it.
+
+I wrote very little of this code by typing it myself. I used AI tools the whole way: Codex, Cursor, Claude Code, and a bit of Muse at the very end. I gave instructions, read what came back, got angry when it broke something, and tried again. That's a real way to build software now, and it's what this blog is about. I'm not an expert who figured it out in advance. I learned a lot along the way, and I want to keep it.
+
+## Where the record is
+
+Every one of those tools keeps your chats on your own computer. I didn't know that until this week. So I went looking:
+
+- **Codex:** 67 sessions that touched this project.
+- **Cursor:** about a hundred chats, mostly from August and September.
+- **Claude Code:** 5 long sessions in late September.
+- **Muse:** a handful of sessions, right at the end.
+- **Git:** 755 commits. This is the honest timeline, because commit dates don't lie and my memory does.
+
+One gap: I have no chat logs for February and March. Only commits. So the first post is a bit thinner than the others.
+
+## How I'll write it
+
+Chronological, in parts. Each post covers one stretch of the project and answers the same questions. What was I trying to do? What broke? What did I learn?
+
+A few rules I set for myself:
+
+- **Plain words.** If I didn't understand something at the time, I'll say so instead of pretending.
+- **No customer data.** Kolay Büro handles legal data. I won't share client names, servers, keys or anything like that. I pasted a few secrets into chats by accident over these months, and yes, that is a lesson too. It will come up.
+- **The mistakes stay in.** A lot of what I learned came from things going wrong twice in a row.
+
+## The shape of the whole thing
+
+Looking at the commit history, the project has clear phases:
+
+1. **Feb to Mar:** getting a multi-tenant app to exist at all. Servers, subdomains, CI.
+2. **Apr to Jun:** making it look and behave like one product instead of fifty pages.
+3. **July:** going live, the UYAP browser extension, superadmin tools, the first AI features.
+4. **August:** security questions, a migration tool for moving old systems in, and a sidebar that I broke more than once.
+5. **September:** a big UI overhaul that took three tries.
+
+The next posts follow that order. If you are building something with AI and feel lost half the time, you'll probably recognize a few of these moments.

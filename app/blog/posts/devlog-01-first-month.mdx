@@ -1,0 +1,53 @@
+---
+title: 'Devlog 01: The first month, subdomains, secrets and red CI'
+publishedAt: '2026-03-31'
+summary: 'February and March: getting a multi-tenant Go and Next.js app to run on a real server, and learning what CI is by failing it.'
+tags: 'devlog, kolay-buro'
+---
+
+_No chat logs exist for this stretch, so this one comes from commit history only. It's thinner, and I'm only writing what the commits actually show._
+
+The first commit is dated 25 February 2026. The project was a monorepo: a Go backend, a Next.js frontend, Postgres for the data. Before the day ended there were twelve commits, and several of them are me fixing my own mistakes.
+
+## Day one, in commit messages
+
+The order is funny when you read it back:
+
+- `Initial commit`
+- `fix: frontend directory added as a normal folder instead of a submodule`
+- `security: move hardcoded secrets to env vars`
+- `ci: fix golangci-lint timeout and go version`
+- `fix(frontend): bake NEXT_PUBLIC_API_URL at build time via Docker ARG`
+
+Two things I learned here without knowing it yet. First, I had put secrets straight into the code, and moved them out on the same day. Second, in Next.js, variables that start with `NEXT_PUBLIC_` get baked into the build. Changing them on the server later does nothing. That bit me on day one and again later.
+
+## One office, one subdomain
+
+The main idea of the product: every law firm is a tenant with its own address, like `firmname.kolayburo.com`, and its own space in the database. Everything in March is built around that.
+
+That created problems I hadn't thought about:
+
+- The app needs to read the subdomain from the address. It broke when I opened it by IP address, because an IP has no subdomain. (`skip subdomain extraction for bare IP addresses`)
+- Some names must not be treated as offices at all, like `api`, `app` and `www`. (`skip reserved subdomains`)
+- The browser blocks requests between different subdomains unless the server allows it, so I had to add a wildcard CORS rule.
+- The scary one, on 7 March: a login token from one office could be reused on another. The commit is called `prevent cross-tenant JWT reuse (IDOR)`. It's the first time I understood that "it works" and "it's safe" are different questions.
+
+## CI is a teacher who is never happy
+
+I spent a strangely large part of March fighting the linter in CI. `golangci-lint` changed its config format between versions. I fixed it on 4 March, then on 15 March I gave up on it and replaced it with `go vet` plus `staticcheck`. The commit message even says "to avoid v1/v2 version conflicts".
+
+I also learned that Next.js removed its `next lint` command, so CI had to call `eslint .` directly.
+
+## Other things that happened
+
+- 4 March: the server started pulling prebuilt images from GitHub's registry. I also removed the Postgres port from public exposure. It should never have been open.
+- 9 to 10 March: a staging pipeline, and Redis for caching, tokens and rate limits.
+- 12 March: `remove hardcoded dev auto-login credentials`. Yes, again.
+- 13 March: I split one giant models file and one giant handlers file into per-domain files.
+- 21 March: I replaced a call to the Claude API with a self-hosted model (sentence-transformers) for mapping columns when importing data. Same day I added a pile of legal modules: mediation, power of attorney, contracts, detention tracking, time tracking, templates, appointments.
+
+## What I took from this
+
+- Move secrets out of code on day one, not on day thirty.
+- "Multi-tenant" means every feature has a second question: whose data is this?
+- Don't fight your tools' versions forever. Sometimes swapping the tool is faster.

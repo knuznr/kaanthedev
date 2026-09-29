@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 44 44">
+  <style>
+    .bg { fill: #111111 }
+    .k { fill: #F1EFEA }
+    @media (prefers-color-scheme: dark) {
+      .bg { fill: #EDEBE6 }
+      .k { fill: #0E0E0D }
+    }
+  </style>
+  <rect class="bg" width="44" height="44" rx="8" />
+  <g transform="translate(22 22) scale(1.14) translate(-22.09 -22.01)">
+    <path class="k" d="m4.86 9.41h7.46v8.88l8.29-8.88h8.97l-11.02 11.99 11.35 13.21h-8.98l-8.61-9.89v9.89h-7.46v-25.2z" />
+    <circle cx="34.61" cy="29.8" r="4.705" fill="#E5391F" />
+  </g>
+</svg>

@@ -8,9 +8,9 @@ export const profile = {
   location: 'Turkey / Remote',
   status: 'Building Kolay Büro',
   bio: [
-    "I'm the founder and developer of Kolay Büro, a legal operations platform built around how law firms in Turkey actually work.",
-    'I turn complex workflows across cases, clients, finance, documents, and daily operations into focused product experiences.',
-    'My work sits between product thinking, interface design, and full-stack engineering.',
+    "I'm Kaan. I build Kolay Büro, a legal operations platform for law firms in Turkey: cases, clients, documents, finance and deadlines in one place.",
+    'I build with AI coding tools and keep the decisions myself: plans get read, tests get run, and every change gets checked before it ships.',
+    "This site is where I keep the notes: what I built, what broke, what I'd do differently.",
   ],
   now: [
     'Building and shipping Kolay Büro',

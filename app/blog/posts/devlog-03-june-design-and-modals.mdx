@@ -1,0 +1,44 @@
+---
+title: 'Devlog 03: June, fonts, ratios and redoing every modal'
+publishedAt: '2026-06-24'
+summary: 'A design motto, an animation library, a modal rework with several agents at once, and the moment every dropdown stopped opening.'
+tags: 'devlog, kolay-buro'
+---
+
+There's a gap in the logs after early May. When they pick up on 16 June, the first session is a broad review: bugs, security holes, suggestions, and anything that would make the UI friendlier.
+
+The first thing that broke was small. An error about not resolving `tailwindcss`, with a path that pointed at the repo root instead of the frontend folder. A boring reminder that in a monorepo, where you run things matters.
+
+## Numbers for design
+
+I had switched the font to Inter, and then looked at the layout in numbers instead of feelings: font ratios, widths and heights of boxes. It's a good way to make design less of a guess.
+
+The second problem was more useful. Each page repeated the same long string of styling, like `flex flex-col gap-3 rounded-lg border border-border bg-card/60 px-3 py-2...`, slightly different every time. The answer was one shared design language, which turned into shared components. That idea came back in September on a much bigger scale.
+
+## The 19 June session
+
+That day was a lot at once:
+
+- Login and register redesigned, following a `design-template.md` file with rules I'd written.
+- A UX roadmap put into action.
+- Framer Motion for animation. Whether to add it was a question first, and worth asking. It's easy to add a library because it sounds modern.
+- The test setup: Vitest, Testing Library and Playwright for the critical flows, which the review flagged as the biggest gap.
+- A **modal rework.** Dynamic fields make modals central to the product, so the work covered how dense forms should be built and how "are you sure?" confirmations should behave for dangerous actions like deleting.
+
+Then I tried it, and two things were wrong. Modals were opening at the bottom of the screen, and dropdown menus no longer opened.
+
+That's the honest shape of AI-assisted work. It does the big thing and breaks a small thing next to it. I only noticed because I clicked around. Clicking every corner after every change might be the most valuable skill I built this year.
+
+## Screenshots forced me to make demo data
+
+For marketing I needed screenshots of every page. Most of them came out empty, because I had no mock data in them. An empty app looks broken. If you need to demo something, seed realistic data first, and keep a dataset you can reload.
+
+## Two products
+
+Later that morning I realized the AI had been treating this as one product. It's really **two**: an on-prem one installed on a customer's own server, and a SaaS one, with different flows. After that, everything had to be checked twice.
+
+## What I took from this
+
+- Write down what's obvious only to you. Two product versions, one codebase.
+- Click through the whole app after every change, not just the page you edited.
+- Adding a library is a decision, not a task.
