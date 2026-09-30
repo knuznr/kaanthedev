@@ -30,7 +30,7 @@ export const navItems: NavItem[] = [
 ]
 
 export const socials: Social[] = [
-  { label: 'GitHub', href: 'https://github.com/knnuznr', accent: 'yellow' },
+  { label: 'GitHub', href: 'https://github.com/knuznr', accent: 'yellow' },
   { label: 'LinkedIn', href: 'https://linkedin.com/in/kaan-uzunerr', accent: 'red' },
   { label: 'Email', href: 'mailto:me@kaanuzuner.dev', accent: 'blue' },
 ]

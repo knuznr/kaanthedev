@@ -111,7 +111,6 @@ export function Contact() {
         <Textarea id="message" name="message" required minLength={10} rows={5} className="resize-none" aria-invalid={status === 'error'} />
       </div>
       <input type="checkbox" name="botcheck" tabIndex={-1} autoComplete="off" aria-hidden="true" className="hidden" />
-      <p className="muted text-xs">Messages are delivered by Web3Forms.</p>
       <Button type="submit" size="lg" disabled={status === 'pending'}>
         {status === 'pending' ? 'sending…' : 'send'}
       </Button>

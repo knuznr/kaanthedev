@@ -1,8 +1,10 @@
 import Link from 'next/link'
+import { ArrowUpRight, BookOpen, Mail } from 'lucide-react'
 import { profile, socials } from 'app/lib/data/profile'
 import { projects } from 'app/lib/data/projects'
 import { getLatestPosts, formatDate } from 'app/blog/utils'
 import { ProjectList } from 'app/components/project-list'
+import { Activity } from 'app/components/activity'
 import { Reveal } from 'app/components/reveal'
 import { Button } from 'app/components/ui/button'
 import { RotatingRole } from 'app/components/rotating-role'
@@ -24,15 +26,27 @@ export default function Page() {
         {profile.bio.map((p) => (
           <p key={p} className="muted leading-relaxed">{p}</p>
         ))}
-        <div className="space-y-4 border-t-[3px] border-ink pt-4">
-          <p className="text-lg font-extrabold tracking-tight">Wanna build something? Just leave a note.</p>
-          <div className="flex flex-wrap gap-2">
-            <Button asChild size="lg">
-              <Link href="/contact">Leave a note</Link>
-            </Button>
-            <Button asChild variant="outline" size="lg">
-              <Link href="/blog">Read the devlog</Link>
-            </Button>
+        <div className="space-y-1 rounded-lg bg-accent p-1 text-sm leading-6 font-normal text-accent-foreground">
+          <Activity />
+          <div className="flex flex-col gap-3 p-2">
+            <p>
+              Wanna build something? Check out my{' '}
+              <Link
+                href="/work"
+                className="group/link relative inline-flex items-center gap-0.5 font-medium text-muted-foreground transition-colors duration-150 hover:text-ink after:absolute after:-bottom-0.5 after:left-0 after:h-px after:w-full after:origin-left after:scale-x-0 after:bg-ink after:transition-transform after:duration-200 after:ease-[var(--ease-out)] hover:after:scale-x-100"
+              >
+                work
+                <ArrowUpRight aria-hidden className="size-4 transition-transform duration-200 ease-[var(--ease-out)] group-hover/link:-translate-y-0.5 group-hover/link:translate-x-0.5" />
+              </Link>
+            </p>
+            <div className="flex flex-row items-center gap-2">
+              <Button asChild>
+                <Link href="/contact"><Mail aria-hidden />Leave a note</Link>
+              </Button>
+              <Button asChild variant="outline">
+                <Link href="/blog"><BookOpen aria-hidden />Read the blog</Link>
+              </Button>
+            </div>
           </div>
         </div>
         <ul className="flex gap-5 text-sm">
