@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="en" data-theme="dark">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/pomodro/favicon.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>pomodoro — kaan uzuner</title>
+    <script>
+      // Set the theme before the first paint so there is no flash.
+      // Follows the portfolio site's choice: a stored theme wins, otherwise the
+      // OS preference decides.
+      (function () {
+        var theme = 'dark';
+        try {
+          var stored = window.localStorage.getItem('theme');
+          if (stored === 'light' || stored === 'dark') {
+            theme = stored;
+          } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+            theme = 'dark';
+          } else {
+            theme = 'light';
+          }
+        } catch (error) {
+          theme = 'dark';
+        }
+        document.documentElement.dataset.theme = theme;
+      })();
+    </script>
+    <script type="module" crossorigin src="/pomodro/assets/index-CzymZd49.js"></script>
+    <link rel="stylesheet" crossorigin href="/pomodro/assets/index-Dc4Z6zrG.css">
+  </head>
+  <body>
+    <div id="root"></div>
+  </body>
+</html>
