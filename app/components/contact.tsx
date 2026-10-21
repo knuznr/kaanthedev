@@ -2,9 +2,9 @@
 import { useState } from 'react'
 import { AnimatePresence, motion, useReducedMotion } from 'framer-motion'
 import { SendAnimation, type Origin, type SendStage } from 'app/components/send-animation'
-import { Button } from 'app/components/ui/button'
 import { Input } from 'app/components/ui/input'
 import { Label } from 'app/components/ui/label'
+import { MorphingButton } from 'app/components/ui/morphing-button'
 import { Textarea } from 'app/components/ui/textarea'
 import { siteHost } from 'app/lib/site'
 
@@ -111,9 +111,15 @@ export function Contact() {
         <Textarea id="message" name="message" required minLength={10} rows={5} className="resize-none" aria-invalid={status === 'error'} />
       </div>
       <input type="checkbox" name="botcheck" tabIndex={-1} autoComplete="off" aria-hidden="true" className="hidden" />
-      <Button type="submit" size="lg" disabled={status === 'pending'}>
-        {status === 'pending' ? 'sending…' : 'send'}
-      </Button>
+      <MorphingButton
+        type="submit"
+        status={status === 'pending' ? 'loading' : status}
+        idleText="send"
+        loadingText="sending…"
+        successText="sent"
+        errorText="try again"
+        disabled={status === 'pending'}
+      />
       <SendAnimation
         stage={stage}
         origin={origin}
