@@ -1,10 +1,11 @@
 import { notFound } from 'next/navigation'
-import Link from 'next/link'
 import type { Metadata } from 'next'
 import { getBlogPosts, getPost, formatDate } from 'app/blog/utils'
 import { CustomMDX } from 'app/components/mdx'
 import { Title } from 'app/components/title'
 import { PageTransition } from 'app/components/page-transition'
+import { ScrollProgressNav } from 'app/components/scroll-progress-nav'
+import { Breadcrumb } from 'app/components/ui/breadcrumb'
 import { ogMeta } from 'app/og/metadata'
 
 export function generateStaticParams() {
@@ -38,15 +39,26 @@ export default async function PostPage({ params }: { params: Promise<{ slug: str
   const post = getPost(slug)
   if (!post) notFound()
 
+  const title = post.metadata.title.replace(/[.\s]+$/, '')
+
   return (
+    <>
     <PageTransition>
     <article className="pb-12">
-      <Link href="/blog" transitionTypes={['nav-back']} className="muted text-sm transition-colors hover:text-ink">
-        &#8592; writing
-      </Link>
+      <Breadcrumb
+        items={[
+          {
+            label: 'writing',
+            href: '/blog',
+            icon: <span aria-hidden="true">←</span>,
+            linkProps: { transitionTypes: ['nav-back'] },
+          },
+          { label: title },
+        ]}
+      />
       <header className="mb-10 mt-8">
         <p className="mono-label muted">{formatDate(post.metadata.publishedAt, false)}</p>
-        <Title as="h1" className="mt-3 text-[clamp(2.25rem,9vw,3.75rem)]">{post.metadata.title.replace(/[.\s]+$/, '')}</Title>
+        <Title as="h1" className="mt-3 text-[clamp(2.25rem,9vw,3.75rem)]">{title}</Title>
         {post.metadata.tags && post.metadata.tags.length > 0 && (
           <ul className="mt-4 flex flex-wrap gap-2 font-mono text-xs">
             {post.metadata.tags.map((t) => (
@@ -55,10 +67,12 @@ export default async function PostPage({ params }: { params: Promise<{ slug: str
           </ul>
         )}
       </header>
-      <div className="prose max-w-none">
+      <div className="prose max-w-none" id="post-content">
         <CustomMDX source={post.content} />
       </div>
     </article>
     </PageTransition>
+    <ScrollProgressNav contentId="post-content" />
+    </>
   )
 }
