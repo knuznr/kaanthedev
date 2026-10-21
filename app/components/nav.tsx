@@ -1,4 +1,5 @@
 import Link from 'next/link'
+import { CommandMenuTrigger } from './command-menu'
 import { ThemeToggle } from './theme-toggle'
 
 const links = [
@@ -24,6 +25,7 @@ export function Navbar() {
               </li>
             ))}
           </ul>
+          <CommandMenuTrigger />
           <ThemeToggle />
         </nav>
       </div>

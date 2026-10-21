@@ -28,6 +28,11 @@
   --color-accent: color-mix(in srgb, var(--ink) 8%, var(--paper));
   --color-accent-foreground: var(--ink);
   --color-muted-foreground: var(--muted);
+  /* command-menu aliases: EasyUI token names mapped onto paper/ink */
+  --color-surface: color-mix(in srgb, var(--ink) 4%, var(--paper));
+  --color-surface-raised: color-mix(in srgb, var(--ink) 8%, var(--paper));
+  --color-text-primary: var(--ink);
+  --color-text-muted: var(--muted);
   --color-border: color-mix(in srgb, var(--ink) 15%, transparent);
   --color-input: color-mix(in srgb, var(--ink) 25%, transparent);
   --color-ring: var(--ink);

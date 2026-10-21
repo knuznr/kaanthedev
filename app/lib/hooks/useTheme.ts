@@ -11,16 +11,23 @@ export function useTheme(): { theme: Theme; toggle: () => void } {
     setTheme(isDark ? 'dark' : 'light')
   }, [])
 
+  // one theme, many toggles (nav button + command menu): keep every instance in sync
+  useEffect(() => {
+    const sync = () => {
+      setTheme(document.documentElement.classList.contains('dark') ? 'dark' : 'light')
+    }
+    window.addEventListener('themechange', sync)
+    return () => window.removeEventListener('themechange', sync)
+  }, [])
+
   const toggle = useCallback(() => {
-    setTheme((prev) => {
-      const next: Theme = prev === 'dark' ? 'light' : 'dark'
-      const root = document.documentElement
-      root.classList.toggle('dark', next === 'dark')
-      try {
-        localStorage.setItem('theme', next)
-      } catch {}
-      return next
-    })
+    const next: Theme = document.documentElement.classList.contains('dark') ? 'light' : 'dark'
+    document.documentElement.classList.toggle('dark', next === 'dark')
+    try {
+      localStorage.setItem('theme', next)
+    } catch {}
+    setTheme(next)
+    window.dispatchEvent(new Event('themechange'))
   }, [])
 
   return { theme, toggle }

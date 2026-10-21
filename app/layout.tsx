@@ -3,6 +3,7 @@ import type { Metadata, Viewport } from 'next'
 import { Inter, JetBrains_Mono } from 'next/font/google'
 import { Navbar } from './components/nav'
 import { MobileTabBar } from './components/mobile-tab-bar'
+import { CommandMenu } from './components/command-menu'
 import { Analytics } from '@vercel/analytics/next'
 import { SpeedInsights } from '@vercel/speed-insights/next'
 import Footer from './components/footer'
@@ -82,6 +83,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <a href="#content" className="sr-only focus:not-sr-only focus:absolute focus:z-50 focus:border focus:border-ink focus:bg-paper focus:px-4 focus:py-2">Skip to content</a>
           <Navbar />
           <MobileTabBar />
+          <CommandMenu />
           <main id="content" className="mx-auto w-full max-w-2xl px-6">{children}</main>
           <Footer />
           <Analytics />
